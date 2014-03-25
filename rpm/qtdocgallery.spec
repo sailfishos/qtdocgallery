@@ -23,7 +23,7 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(dbus-1)
-BuildRequires:  pkgconfig(tracker-sparql-0.18)
+BuildRequires:  pkgconfig(tracker-sparql-1.0)
 
 %description
 Qt document gallery optional module
