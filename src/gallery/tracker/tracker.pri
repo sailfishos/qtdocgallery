@@ -3,7 +3,7 @@ INCLUDEPATH += $$PWD
 QT += dbus
 
 CONFIG += link_pkgconfig
-PKGCONFIG_PRIVATE += tracker-sparql-0.18
+PKGCONFIG_PRIVATE += tracker-sparql-1.0
 
 PRIVATE_HEADERS += \
         $$PWD/qgallerydbusinterface_p.h \
