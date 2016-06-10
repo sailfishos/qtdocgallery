@@ -39,6 +39,8 @@
 **
 ****************************************************************************/
 
+// precompiled headers can cause qobject.h to be included before tracker-sparql.h
+#undef signals
 #include <tracker-sparql.h>
 
 #include "qgallerytrackerlistcolumn_p.h"
