@@ -292,6 +292,22 @@ namespace
     Type##Mask \
 }
 
+#define QT_GALLERY_ITEM_TYPE_UNION(Type, RdfPrefix, RdfType, Union, Prefix, PropertyGroup) \
+{ \
+    QLatin1String(#Type), \
+    QLatin1String(#RdfPrefix":"#RdfType), \
+    QLatin1String("?x"), \
+    QLatin1String("/"#RdfPrefix"#"#RdfType), \
+    QLatin1String(Union" . ?x tracker:available true"), \
+    0, \
+    QGalleryTypePrefix(#Prefix"::"), \
+    QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
+    QGalleryCompositePropertyList(qt_gallery##PropertyGroup##CompositePropertyList), \
+    Type##Id, \
+    Type##Mask \
+}
+
+
 #define QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(Type, RdfPrefix, RdfType, Prefix, PropertyGroup) \
 { \
     QLatin1String(#Type), \
@@ -1040,7 +1056,7 @@ static const QGalleryItemType qt_galleryItemTypeList[] =
 {
     QT_GALLERY_ITEM_TYPE(File      , nfo, FileDataObject   , file      , File),
     QT_GALLERY_ITEM_TYPE(Folder    , nfo, Folder           , folder    , File),
-    QT_GALLERY_ITEM_TYPE(Document  , nfo, Document         , document  , Document),
+    QT_GALLERY_ITEM_TYPE_UNION(Document, nfo, Document, "{ ?x a nfo:PaginatedTextDocument } UNION { ?x a nfo:Presentation } UNION { ?x a nfo:Spreadsheet }", document  , Document),
     QT_GALLERY_ITEM_TYPE(Audio     , nmm, MusicPiece       , audio     , Audio),
     QT_GALLERY_ITEM_TYPE(Image     , nmm, Photo            , image     , Image),
     QT_GALLERY_ITEM_TYPE(Video     , nmm, Video            , video     , Video),
