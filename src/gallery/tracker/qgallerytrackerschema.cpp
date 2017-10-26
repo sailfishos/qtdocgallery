@@ -822,7 +822,7 @@ static const QGalleryItemProperty qt_galleryAudioPropertyList[] =
     QT_GALLERY_LINKED_PROPERTY("artist"     , "nmm:artistName(?artist)"     , " . ?x nmm:performer ?artist"                                      , String, CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("composer"   , "nmm:artistName(?composer)"   , " . ?x nmm:composer ?composer"                                     , String, CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("albumArtist", "nmm:artistName(?albumArtist)", " . ?x nmm:musicAlbum ?album . ?album nmm:albumArtist ?albumArtist", String, CanRead | CanSort | CanFilter),
-    QT_GALLERY_LINKED_PROPERTY("albumTitle" , "nmm:albumTitle(?album)"      , " . ?x nmm:musicAlbum ?album"                                      , String, CanRead | CanSort | CanFilter)
+    QT_GALLERY_LINKED_PROPERTY("albumTitle" , "nie:title(?album)"      , " . ?x nmm:musicAlbum ?album"                                      , String, CanRead | CanSort | CanFilter)
 };
 
 static const QGalleryCompositeProperty qt_galleryAudioCompositePropertyList[] =
@@ -961,13 +961,13 @@ static const QGalleryCompositeProperty qt_galleryTextCompositePropertyList[] =
 ////////
 
 //nmm:MusicAlbum : nfo:MediaList
-//  nmm:albumPeakGain, nmm:albumGain, nmm:albumDuration, nmm:albumTitle, nmm:albumTrackCount
+//  nmm:albumPeakGain, nmm:albumGain, nmm:albumDuration, nie:title, nmm:albumTrackCount
 //  nmm:albumArtist,
 
 static const QGalleryItemProperty qt_galleryAlbumPropertyList[] =
 {
-    QT_GALLERY_ITEM_PROPERTY("albumTitle" , "nmm:albumTitle(?x)"     , String, CanRead | CanWrite | CanFilter | CanSort),
-    QT_GALLERY_ITEM_PROPERTY("title"      , "nmm:albumTitle(?x)"     , String, CanRead | CanWrite | CanFilter | CanSort),
+    QT_GALLERY_ITEM_PROPERTY("albumTitle" , "nie:title(?x)"     , String, CanRead | CanWrite | CanFilter | CanSort),
+    QT_GALLERY_ITEM_PROPERTY("title"      , "nie:title(?x)"     , String, CanRead | CanWrite | CanFilter | CanSort),
     QT_GALLERY_ITEM_PROPERTY("trackCount" , "nmm:albumTrackCount(?x)", Int   , CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("artist"     , "nmm:artistName(?albumArtist)", " . ?x nmm:albumArtist ?albumArtist", String, CanRead | CanFilter | CanSort),
     QT_GALLERY_LINKED_PROPERTY("albumArtist", "nmm:artistName(?albumArtist)", " . ?x nmm:albumArtist ?albumArtist", String, CanRead | CanFilter | CanSort),
