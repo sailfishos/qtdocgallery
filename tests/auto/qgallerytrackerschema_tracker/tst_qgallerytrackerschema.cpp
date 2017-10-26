@@ -1310,10 +1310,10 @@ void tst_QGalleryTrackerSchema::queryResponseFilePropertyNames_data()
                     << QLatin1String("+trackNumber"))
             << 6 // tableWidth
             << 6 // compositeOffset
-            <<  "SELECT ?x nie:url(?x) rdf:type(?x) nie:title(?x) nmm:albumTitle(?album) nmm:artistName(?albumArtist) "
+            <<  "SELECT ?x nie:url(?x) rdf:type(?x) nie:title(?x) nie:title(?album) nmm:artistName(?albumArtist) "
                 "WHERE {?x a nmm:MusicPiece . ?x tracker:available true OPTIONAL {?x nmm:musicAlbum ?album . ?album nmm:albumArtist ?albumArtist}} "
                 "GROUP BY ?x "
-                "ORDER BY ASC(nmm:albumTitle(?album)) ASC(nmm:trackNumber(?x))"
+                "ORDER BY ASC(nie:title(?album)) ASC(nmm:trackNumber(?x))"
             << (QStringList() // fieldNames
                     << QLatin1String("nie:title")
                     << QString()
@@ -2387,7 +2387,7 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                         "?track a nmm:MusicPiece . "
                         "?track nmm:musicAlbum ?x . "
                         "?track tracker:available true "
-                        "FILTER((nmm:albumTitle(?x)='Greatest Hits'))"
+                        "FILTER((nie:title(?x)='Greatest Hits'))"
                     "} "
                     "GROUP BY ?x";
     } {
@@ -2404,7 +2404,7 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                         "?track a nmm:MusicPiece . "
                         "?track nmm:musicAlbum ?x . "
                         "?track tracker:available true "
-                        "FILTER((nmm:albumTitle(?x)='Greatest Hits'))"
+                        "FILTER((nie:title(?x)='Greatest Hits'))"
                     "} "
                     "GROUP BY ?x";
     } {
@@ -2422,7 +2422,7 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                         "?track nmm:musicAlbum ?x . "
                         "?track tracker:available true . "
                         "?x nmm:albumArtist <artist:Self%20Titled> "
-                        "FILTER((nmm:albumTitle(?x)='Greatest Hits'))"
+                        "FILTER((nie:title(?x)='Greatest Hits'))"
                     "} "
                     "GROUP BY ?x";
     } {
@@ -2440,7 +2440,7 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                         "?track nmm:musicAlbum ?x . "
                         "?track tracker:available true . "
                         "?x nmm:albumArtist <artist:Self%20Titled> "
-                        "FILTER((nmm:albumTitle(?x)='Greatest Hits'))"
+                        "FILTER((nie:title(?x)='Greatest Hits'))"
                     "} "
                     "GROUP BY ?x";
     } {
@@ -2458,7 +2458,7 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                         "?album a nmm:MusicAlbum . "
                         "?x nmm:musicAlbum ?album . "
                         "?album nmm:albumArtist <artist:Self%20Titled> "
-                        "FILTER((nmm:albumTitle(?album)='Greatest Hits'))"
+                        "FILTER((nie:title(?album)='Greatest Hits'))"
                     "} "
                     "GROUP BY ?x";
     } {
