@@ -1,4 +1,7 @@
 TEMPLATE = app
 CONFIG += console testcase
 
-QT += testlib docgallery
+QT = \
+    core \
+    testlib \
+    docgallery

@@ -2,7 +2,10 @@ CXX_MODULE = docgallery
 TARGET     = docgalleryplugin
 TARGETPATH = QtDocGallery
 
-QT += qml docgallery
+QT = \
+    core \
+    qml \
+    docgallery
 
 HEADERS += \
     qdeclarativedocumentgallery.h \
