@@ -343,12 +343,12 @@ static void qt_appendJoin(QString *currentJoin, const QString &typeJoin, const Q
     int end = 0;
     int begin;
     do {
-        begin = end;
+        begin = end + 3;
         end = join.indexOf(QLatin1String(" ."), begin + 2);
 
-        const QString substring = join.mid(begin, end != -1 ? end - begin : -1);
+        const QStringRef substring = join.midRef(begin, end != -1 ? end - begin : -1);
         if (!typeJoin.contains(substring) && !currentJoin->contains(substring))
-            *currentJoin += substring;
+            *currentJoin += QLatin1String(" OPTIONAL {") + substring + QLatin1Char('}');
     } while (end != -1);
 }
 
@@ -717,7 +717,7 @@ static bool qt_writeOrientationCondition(
 //  nie:generator, nie:relatedTo, nie:legal, nie:informationElementDate, nie:plainTextContent,
 //  nie:language, nie:mimeType, nie:subject, nie:title
 #define QT_GALLERY_NIE_INFORMATIONELEMENT_PROPERTIES \
-    QT_GALLERY_ITEM_PROPERTY("author"     , "dc:creator(?x)"       , String    , CanRead | CanWrite | CanSort | CanFilter), \
+    QT_GALLERY_LINKED_PROPERTY("author", "nco:fullname(?creator)", " . ?x nco:creator ?creator", String, CanRead | CanWrite | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("comments"   , "nie:comment(?x)"      , String    , CanRead | CanWrite | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("copyright"  , "nie:copyright(?x)"    , String    , CanRead | CanWrite | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("description", "nie:description(?x)"  , String    , CanRead | CanWrite | CanSort | CanFilter), \
@@ -1608,9 +1608,6 @@ void QGalleryTrackerSchema::populateItemArguments(
     }
 
     const QString sortFragment = qt_writeSorting(&completeJoin, join, sortPropertyNames, itemProperties);
-
-    if (!completeJoin.isEmpty())
-        completeJoin = QStringLiteral(" OPTIONAL {") + completeJoin.mid(3) + QStringLiteral("}");
 
     arguments->service = qt_galleryItemTypeList[m_itemIndex].service;
     arguments->updateMask = qt_galleryItemTypeList[m_itemIndex].updateMask;
