@@ -329,7 +329,12 @@ QDocumentGallery::QDocumentGallery(QObject *parent)
     qDBusRegisterMetaType<QGalleryTrackerGraphUpdate>();
     qDBusRegisterMetaType<QVector<QGalleryTrackerGraphUpdate> >();
 
-    d->connection = tracker_sparql_connection_get(0, 0);
+    GError *error = NULL;
+    d->connection = tracker_sparql_connection_bus_new("org.freedesktop.Tracker3.Miner.Files", NULL, NULL, &error);
+    if (error != NULL) {
+        qWarning() << "Error creating tracker connection:" << error->message;
+        g_error_free(error);
+    }
 }
 
 QDocumentGallery::~QDocumentGallery()
