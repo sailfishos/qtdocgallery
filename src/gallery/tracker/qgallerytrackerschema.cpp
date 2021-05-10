@@ -640,7 +640,7 @@ static bool qt_writeFilePathCondition(
         const QGalleryCompositeProperty &,
         const QGalleryMetaDataFilter &filter)
 {
-    return qt_writeFilePathUrlCondition(error, query, QLatin1String("nie:url(?x)"), filter);
+    return qt_writeFilePathUrlCondition(error, query, QLatin1String("nie:isStoredAs(?x)"), filter);
 }
 
 static bool qt_writePathCondition(
@@ -650,7 +650,7 @@ static bool qt_writePathCondition(
         const QGalleryMetaDataFilter &filter)
 {
     return qt_writeFilePathUrlCondition(
-            error, query, QLatin1String("nie:url(nfo:belongsToContainer(?x))"), filter);
+            error, query, QLatin1String("nie:isStoredAs(nfo:belongsToContainer(?x))"), filter);
 }
 
 static bool qt_writeFileExtensionCondition(
@@ -700,10 +700,10 @@ static bool qt_writeOrientationCondition(
 }
 
 //nie:DataObject
-//  nie:url nie:isPartOf, nie:created, nie:lastRefreshed, nie:interpretedAs, nie:dataSource,
+//  nie:isStoredAs nie:isPartOf, nie:created, nie:lastRefreshed, nie:interpretedAs, nie:dataSource,
 //  nie:byteSize
 #define QT_GALLERY_NIE_DATAOBJECT_PROPERTIES \
-    QT_GALLERY_ITEM_PROPERTY("url", "nie:url(?x)", Url, CanRead | CanSort | CanFilter | IsResource)
+    QT_GALLERY_ITEM_PROPERTY("url", "nie:isStoredAs(?x)", Url, CanRead | CanSort | CanFilter | IsResource)
 
 //nie:InformationElement
 //  nie:usageCounter, nie:rootElementOf, nie:contentSize, nie:isLogicalPartOf, nie:characterSet,
@@ -1310,9 +1310,9 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                                 + QLatin1String(">");
                     } else {
                         filterStatement
-                                = QLatin1String("tracker:uri-is-descendant(nie:url(<")
+                                = QLatin1String("tracker:uri-is-descendant(nie:isStoredAs(<")
                                 + rootUrn
-                                + QLatin1String(">), nie:url(?x))");
+                                + QLatin1String(">), nie:isStoredAs(?x))");
                     }
                 } else {
                     result = QDocumentGallery::ItemIdError;
@@ -1335,7 +1335,7 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("> nfo:hasMediaFileListEntry ?entry"
                                             " . ?entry nfo:entryUrl ?entryUrl"
-                                            " . ?x nie:url ?entryUrl");
+                                            " . ?x nie:isStoredAs ?entryUrl");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
@@ -1576,10 +1576,10 @@ void QGalleryTrackerSchema::populateItemArguments(
     if (qt_galleryItemTypeList[m_itemIndex].updateId & FileMask) {
         fieldNames = QStringList()
                      << qt_galleryItemTypeList[m_itemIndex].identity
-                     << QLatin1String("nie:url(?x)")
+                     << QLatin1String("nie:isStoredAs(?x)")
                      << QLatin1String("rdf:type(?x)")
                      << arguments->fieldNames;
-        arguments->valueOffset = 3;  // identity + nie:url + rdf:type
+        arguments->valueOffset = 3;  // identity + nie:isStoredAs + rdf:type
         arguments->idColumn.reset(new QGalleryTrackerServicePrefixColumn);
         arguments->urlColumn.reset(
                 new QGalleryTrackerFileUrlColumn(QGALLERYTRACKERFILEURLCOLUMN_DEFAULT_COL));
