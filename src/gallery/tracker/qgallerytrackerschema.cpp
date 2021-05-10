@@ -57,8 +57,6 @@
 #include <QtCore/qxmlstream.h>
 #include <QtCore/qdebug.h>
 
-#include <tracker-sparql.h>
-
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 namespace
@@ -814,7 +812,7 @@ static const QGalleryItemProperty qt_galleryAudioPropertyList[] =
     QT_GALLERY_ITEM_PROPERTY("lyrics"     , "nmm:lyrics(?x)"                                     , String, CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_ITEM_PROPERTY("trackNumber", "nmm:trackNumber(?x)"                                , Int   , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("discNumber" , "nmm:setNumber(?disc)"        , " . ?x nmm:musicAlbumDisc ?disc"                                   , Int   , CanRead | CanSort | CanFilter),
-    QT_GALLERY_LINKED_PROPERTY("artist"     , "nmm:artistName(?artist)"     , " . ?x nmm:performer ?artist"                                      , String, CanRead | CanSort | CanFilter),
+    QT_GALLERY_LINKED_PROPERTY("artist"     , "nmm:artistName(?artist)"     , " . ?x nmm:artist ?artist"                                         , String, CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("composer"   , "nmm:artistName(?composer)"   , " . ?x nmm:composer ?composer"                                     , String, CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("albumArtist", "nmm:artistName(?albumArtist)", " . ?x nmm:musicAlbum ?album . ?album nmm:albumArtist ?albumArtist", String, CanRead | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("albumTitle" , "nie:title(?album)"      , " . ?x nmm:musicAlbum ?album"                                      , String, CanRead | CanSort | CanFilter)
@@ -1041,7 +1039,7 @@ static const QGalleryItemType qt_galleryItemTypeList[] =
     QT_GALLERY_ITEM_TYPE(Video     , nmm, Video            , video     , Video),
     QT_GALLERY_ITEM_TYPE(Playlist  , nmm, Playlist         , playlist  , Playlist),
     QT_GALLERY_ITEM_TYPE(Text      , nfo, PlainTextDocument, text      , Text),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:performer ?x . ?track tracker:available true"  , artist     , Artist),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track tracker:available true"    , artist     , Artist),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track tracker:available true", albumArtist, AlbumArtist),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?x . ?track tracker:available true", album     , Album),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(PhotoAlbum, nmm, ImageList , photoAlbum, PhotoAlbum),
@@ -1281,11 +1279,11 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
         if (index != -1) {
             if (itemTypes[index].itemType == QDocumentGallery::Artist) {
                 if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album) {
-                    *join   = QLatin1String(" . ?track nmm:performer <")
+                    *join   = QLatin1String(" . ?track nmm:artist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio) {
-                    *join   = QLatin1String(" . ?x nmm:performer <")
+                    *join   = QLatin1String(" . ?x nmm:artist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
                 } else {
