@@ -684,16 +684,16 @@ static bool qt_writeOrientationCondition(
         return false;
     } else switch (filter.value().toInt()) {
     case 0:
-        *query += QLatin1String("nfo:orientation(?x) = 'http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-top'");
+        *query += QLatin1String("nfo:orientation(?x) = 'http://tracker.api.gnome.org/ontology/v3/nfo#orientation-top'");
         return true;
     case 90:
-        *query += QLatin1String("nfo:orientation(?x) = 'http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-left'");
+        *query += QLatin1String("nfo:orientation(?x) = 'http://tracker.api.gnome.org/ontology/v3/nfo#orientation-left'");
         return true;
     case 180:
-        *query += QLatin1String("nfo:orientation(?x) = 'http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-bottom'");
+        *query += QLatin1String("nfo:orientation(?x) = 'http://tracker.api.gnome.org/ontology/v3/nfo#orientation-bottom'");
         return true;
     case 270:
-        *query += QLatin1String("nfo:orientation(?x) = 'http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-right'");
+        *query += QLatin1String("nfo:orientation(?x) = 'http://tracker.api.gnome.org/ontology/v3/nfo#orientation-right'");
         return true;
     default:
         *error = QDocumentGallery::FilterError;

@@ -295,13 +295,13 @@ QGalleryTrackerCompositeColumn *QGalleryTrackerFileExtensionColumn::create(const
 QVariant QGalleryTrackerOrientationColumn::value(QVector<QVariant>::const_iterator row) const
 {
     QString orientation = (row + m_column)->toString();
-    if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-top"))
+    if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-top"))
         return 0;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-left"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-left"))
         return 90;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-bottom"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-bottom"))
         return 180;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-right"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-right"))
         return 270;
     else
         return 0;
