@@ -161,6 +161,7 @@ namespace
     struct QGalleryItemType
     {
         QLatin1String itemType;
+        QLatin1String trackerGraph;
         QLatin1String service;
         QLatin1String identity;
         QLatin1String rdfSuffix;
@@ -273,13 +274,14 @@ namespace
 #define QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES(PropertyName, Type, Factory, QueryBuilder) \
 { QLatin1String(PropertyName), QVariant::Type, QGalleryItemPropertyList(), Factory, QueryBuilder }
 
-#define QT_GALLERY_ITEM_TYPE(Type, RdfPrefix, RdfType, Prefix, PropertyGroup) \
+#define QT_GALLERY_ITEM_TYPE(Type, TrackerGraph, RdfPrefix, RdfType, Prefix, PropertyGroup) \
 { \
     QLatin1String(#Type), \
+    QLatin1String(TrackerGraph), \
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String("?x"), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
-    QLatin1String("?x a "#RdfPrefix":"#RdfType" . ?x nie:isStoredAs ?file . ?file nie:dataSource ?dataSource . ?dataSource tracker:available true"), \
+    QLatin1String("?x a "#RdfPrefix":"#RdfType" . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }"), \
     0, \
     QGalleryTypePrefix(#Prefix"::"), \
     QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
@@ -288,9 +290,27 @@ namespace
     Type##Mask \
 }
 
-#define QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(Type, RdfPrefix, RdfType, Prefix, PropertyGroup) \
+// FileSystem graph items, those don't need to follow isStoredAs to file
+#define QT_GALLERY_ITEM_TYPE_FS(Type, TrackerGraph, RdfPrefix, RdfType, Prefix, PropertyGroup) \
 { \
     QLatin1String(#Type), \
+    QLatin1String(TrackerGraph), \
+    QLatin1String(#RdfPrefix":"#RdfType), \
+    QLatin1String("?x"), \
+    QLatin1String("/"#RdfPrefix"#"#RdfType), \
+    QLatin1String("?x a "#RdfPrefix":"#RdfType" . ?x nie:dataSource ?dataSource . ?dataSource tracker:available true . "), \
+    0, \
+    QGalleryTypePrefix(#Prefix"::"), \
+    QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
+    QGalleryCompositePropertyList(qt_gallery##PropertyGroup##CompositePropertyList), \
+    Type##Id, \
+    Type##Mask \
+}
+
+#define QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(Type, TrackerGraph, RdfPrefix, RdfType, Prefix, PropertyGroup) \
+{ \
+    QLatin1String(#Type), \
+    QLatin1String(TrackerGraph), \
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String("?x"), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
@@ -303,9 +323,10 @@ namespace
     Type##Mask \
 }
 
-#define QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Type, RdfPrefix, RdfType, Filter, Prefix, PropertyGroup) \
+#define QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Type, TrackerGraph, RdfPrefix, RdfType, Filter, Prefix, PropertyGroup) \
 { \
     QLatin1String(#Type), \
+    QLatin1String(TrackerGraph), \
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String("?x"), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
@@ -318,13 +339,14 @@ namespace
     Type##Mask \
 }
 
-#define QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(Type, RdfPrefix, RdfType, Identity, Prefix, PropertyGroup) \
+#define QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(Type, TrackerGraph, RdfPrefix, RdfType, Identity, Prefix, PropertyGroup) \
 { \
     QLatin1String(#Type), \
+    QLatin1String(TrackerGraph), \
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String(#Identity), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
-    QLatin1String("?x a "#RdfPrefix":"#RdfType " . ?x nie:isStoredAs ?file . ?file nie:dataSource ?dataSource . ?dataSource tracker:available true"), \
+    QLatin1String("?x a "#RdfPrefix":"#RdfType " . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }"), \
     #Identity"!=''", \
     QGalleryTypePrefix(#Prefix"::"), \
     QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
@@ -480,7 +502,7 @@ static bool qt_write_function(
             + stringValue
             + QLatin1String("')");
 
-        return true;
+    return true;
 }
 
 static bool qt_writeCondition(
@@ -643,33 +665,46 @@ static bool qt_writeFilePathCondition(
     return qt_writeFilePathUrlCondition(error, query, QLatin1String("nie:isStoredAs(?x)"), filter);
 }
 
-static bool qt_writePathCondition(
+static bool qt_writeFilePathCondition_fs(
         QDocumentGallery::Error *error,
         QString *query,
         const QGalleryCompositeProperty &,
         const QGalleryMetaDataFilter &filter)
 {
-    return qt_writeFilePathUrlCondition(
-            error, query, QLatin1String("nie:isStoredAs(nfo:belongsToContainer(?x))"), filter);
+    return qt_writeFilePathUrlCondition(error, query, QLatin1String("?x"), filter);
 }
 
-static bool qt_writeFileExtensionCondition(
+static bool qt_writeFileExtensionCondition_helper(
         QDocumentGallery::Error *error,
         QString *query,
         const QGalleryCompositeProperty &,
-        const QGalleryMetaDataFilter &filter)
+        const QGalleryMetaDataFilter &filter, bool direct)
 {
     if (filter.comparator() != QGalleryFilter::Equals || filter.value().type() != QVariant::String) {
         *error = QDocumentGallery::FilterError;
         return false;
     } else {
-        *query += QLatin1String("fn:ends-with(nfo:fileName(?x),'.")
+        *query += (direct ? QLatin1String("fn:ends-with(nfo:fileName(?x),'.")
+                          : QLatin1String("fn:ends-with(nfo:fileName(nie:isStoredAs(?x)),'."))
                 + filter.value().toString()
                 + QLatin1String("')");
         return true;
     }
 }
 
+static bool qt_writeFileExtensionCondition(QDocumentGallery::Error *error, QString *query,
+                                           const QGalleryCompositeProperty &property,
+                                           const QGalleryMetaDataFilter &filter)
+{
+    return qt_writeFileExtensionCondition_helper(error, query, property, filter, false);
+}
+
+static bool qt_writeFileExtensionCondition_fs(QDocumentGallery::Error *error, QString *query,
+                                              const QGalleryCompositeProperty &property,
+                                              const QGalleryMetaDataFilter &filter)
+{
+    return qt_writeFileExtensionCondition_helper(error, query, property, filter, true);
+}
 
 static bool qt_writeOrientationCondition(
         QDocumentGallery::Error *error,
@@ -724,15 +759,25 @@ static bool qt_writeOrientationCondition(
     QT_GALLERY_ITEM_PROPERTY("subject"    , "nie:subject(?x)"      , String    , CanRead | CanWrite | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("title"      , "nie:title(?x)"        , String    , CanRead | CanWrite | CanSort | CanFilter)
 
+// Two sets of basic properties, the FileSystem graph has files as the main items and metadata attached to those, while
+// the other graphs items are identifier type but has nie:isStoredAs referring to the file path.
+// Thus on many places we need separation whether the metadata is direct on indirect.
+//
 //nfo:FileDataObject : nie:DataObject, nie:InformationElement
 //  nfo:fileLastModified, nfo:fileOwner, nfo:hasHash, nfo:fileUrl, nfo:fileName, nfo:permissions,
 //  nfo:fileSize, nfo:fileCreated, nfo:fileLastAccessed
 #define QT_GALLERY_NFO_FILEDATAOBJECT_PROPERTIES \
     QT_GALLERY_NIE_DATAOBJECT_PROPERTIES, \
     QT_GALLERY_NIE_INFORMATIONELEMENT_PROPERTIES, \
+    QT_GALLERY_ITEM_PROPERTY("fileName"     , "nfo:fileName(nie:isStoredAs(?x))"         , String  , CanRead | CanSort | CanFilter), \
+    QT_GALLERY_ITEM_PROPERTY("fileSize"     , "nfo:fileSize(nie:isStoredAs(?x))"         , LongLong, CanRead | CanSort | CanFilter), \
+    QT_GALLERY_ITEM_PROPERTY("lastModified" , "nfo:fileLastModified(nie:isStoredAs(?x))" , DateTime, CanRead | CanSort | CanFilter)
+
+// For FileSystem graph
+#define QT_GALLERY_NFO_FILEDATAOBJECT_PROPERTIES_FS \
+    QT_GALLERY_ITEM_PROPERTY("url", "?x", Url, CanRead | CanSort | CanFilter | IsResource), \
     QT_GALLERY_ITEM_PROPERTY("fileName"     , "nfo:fileName(?x)"         , String  , CanRead | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("fileSize"     , "nfo:fileSize(?x)"         , LongLong, CanRead | CanSort | CanFilter), \
-    QT_GALLERY_ITEM_PROPERTY("lastAccessed" , "nfo:fileLastAccessed(?x)" , DateTime, CanRead | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("lastModified" , "nfo:fileLastModified(?x)" , DateTime, CanRead | CanSort | CanFilter)
 
 
@@ -742,8 +787,11 @@ static const QGalleryItemProperty qt_galleryOrientationPropertyList[] = {
 
 #define QT_GALLERY_NFO_FILEDATAOBJECT_COMPOSITE_PROPERTIES \
     QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("fileExtension", String, QGalleryTrackerFileExtensionColumn::create, qt_writeFileExtensionCondition), \
-    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("filePath"     , String, QGalleryTrackerFilePathColumn::create     , qt_writeFilePathCondition), \
-    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("path"         , String, QGalleryTrackerPathColumn::create         , qt_writePathCondition)
+    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("filePath"     , String, QGalleryTrackerFilePathColumn::create     , qt_writeFilePathCondition)
+
+#define QT_GALLERY_NFO_FILEDATAOBJECT_COMPOSITE_PROPERTIES_FS \
+    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("fileExtension", String, QGalleryTrackerFileExtensionColumn::create, qt_writeFileExtensionCondition_fs), \
+    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("filePath"     , String, QGalleryTrackerFilePathColumn::create     , qt_writeFilePathCondition_fs)
 
 //nfo:Media : nfo:FileDataObject
 //  nfo:equipment, nfo:genre, nfo:averageBitrate, nfo:bitrateType, nfo:encodedBy, nfo:codec,
@@ -782,14 +830,12 @@ static const QGalleryItemProperty qt_galleryOrientationPropertyList[] = {
 
 static const QGalleryItemProperty qt_galleryFilePropertyList[] =
 {
-    QT_GALLERY_NFO_MEDIA_PROPERTIES,
-    QT_GALLERY_NFO_VISUAL_PROPERTIES
+    QT_GALLERY_NFO_FILEDATAOBJECT_PROPERTIES_FS
 };
 
 static const QGalleryCompositeProperty qt_galleryFileCompositePropertyList[] =
 {
-    QT_GALLERY_NFO_FILEDATAOBJECT_COMPOSITE_PROPERTIES,
-    QT_GALLERY_NFO_VISUAL_COMPOSITE_PROPERTIES
+    QT_GALLERY_NFO_FILEDATAOBJECT_COMPOSITE_PROPERTIES_FS
 };
 
 ////////
@@ -1031,19 +1077,19 @@ static const QGalleryItemProperty qt_galleryAudioGenrePropertyList[] =
 
 static const QGalleryItemType qt_galleryItemTypeList[] =
 {
-    QT_GALLERY_ITEM_TYPE(File      , nfo, FileDataObject   , file      , File),
-    QT_GALLERY_ITEM_TYPE(Folder    , nfo, Folder           , folder    , File),
-    QT_GALLERY_ITEM_TYPE(Document  , nfo, Document         , document  , Document),
-    QT_GALLERY_ITEM_TYPE(Audio     , nmm, MusicPiece       , audio     , Audio),
-    QT_GALLERY_ITEM_TYPE(Image     , nmm, Photo            , image     , Image),
-    QT_GALLERY_ITEM_TYPE(Video     , nmm, Video            , video     , Video),
-    QT_GALLERY_ITEM_TYPE(Playlist  , nmm, Playlist         , playlist  , Playlist),
-    QT_GALLERY_ITEM_TYPE(Text      , nfo, PlainTextDocument, text      , Text),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track nie:isStoredAs ?file . ?file nie:dataSource ?dataSource . ?dataSource tracker:available true", artist     , Artist),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track nie:isStoredAs ?file . ?file nie:dataSource ?dataSource . ?dataSource tracker:available true", albumArtist, AlbumArtist),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?x . ?track nie:isStoredAs ?file . ?file nie:dataSource ?dataSource . ?dataSource tracker:available true", album     , Album),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(PhotoAlbum, nmm, ImageList , photoAlbum, PhotoAlbum),
-    QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(AudioGenre, nmm, MusicPiece, nfo:genre(?x), audioGenre, AudioGenre),
+    QT_GALLERY_ITEM_TYPE_FS(File   , "tracker:FileSystem",  nfo, FileDataObject   , file      , File),
+    QT_GALLERY_ITEM_TYPE_FS(Folder , "tracker:FileSystem",  nfo, Folder           , folder    , File),
+    QT_GALLERY_ITEM_TYPE(Document  , "tracker:Documents",   nfo, Document         , document  , Document),
+    QT_GALLERY_ITEM_TYPE(Audio     , "tracker:Audio",       nmm, MusicPiece       , audio     , Audio),
+    QT_GALLERY_ITEM_TYPE(Image     , "tracker:Pictures",    nmm, Photo            , image     , Image),
+    QT_GALLERY_ITEM_TYPE(Video     , "tracker:Video",       nmm, Video            , video     , Video),
+    QT_GALLERY_ITEM_TYPE(Playlist  , "tracker:Audio",       nmm, Playlist         , playlist  , Playlist),
+    QT_GALLERY_ITEM_TYPE(Text      , "tracker:Documents",   nfo, PlainTextDocument, text      , Text),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , "tracker:Audio", nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", artist     , Artist),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, "tracker:Audio", nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", albumArtist, AlbumArtist),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , "tracker:Audio", nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?track . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", album     , Album),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(PhotoAlbum, "tracker:Pictures", nmm, ImageList , photoAlbum, PhotoAlbum),
+    QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(AudioGenre, "tracker:Audio", nmm, MusicPiece, nfo:genre(?x), audioGenre, AudioGenre),
 };
 
 class QGalleryTrackerServicePrefixColumn : public QGalleryTrackerCompositeColumn
@@ -1217,6 +1263,7 @@ QDocumentGallery::Error QGalleryTrackerSchema::prepareQueryResponse(
 QDocumentGallery::Error QGalleryTrackerSchema::prepareTypeResponse(
         QGalleryTrackerResultSetArguments *arguments) const
 {
+    // FIXME: needs Tracker3 migration. Type request doesn't seem too much used so skipped for now.
     if (m_itemIndex < 0)
         return QDocumentGallery::ItemTypeError;
 
@@ -1574,9 +1621,11 @@ void QGalleryTrackerSchema::populateItemArguments(
     }
 
     if (qt_galleryItemTypeList[m_itemIndex].updateId & FileMask) {
+        bool useStoredAs = qt_galleryItemTypeList[m_itemIndex].trackerGraph != QLatin1String("tracker:FileSystem");
+
         fieldNames = QStringList()
                      << qt_galleryItemTypeList[m_itemIndex].identity
-                     << QLatin1String("nie:isStoredAs(?x)")
+                     << (useStoredAs ? QLatin1String("nie:isStoredAs(?x)") : QLatin1String("?x"))
                      << QLatin1String("rdf:type(?x)")
                      << arguments->fieldNames;
         arguments->valueOffset = 3;  // identity + nie:isStoredAs + rdf:type
@@ -1611,10 +1660,21 @@ void QGalleryTrackerSchema::populateItemArguments(
     arguments->identityWidth = 1;
     arguments->tableWidth =  arguments->valueOffset + arguments->fieldNames.count();
     arguments->compositeOffset = arguments->valueOffset + valueNames.count();
+    QString parameterList;
+    QString parameterSelectList;
+    for (int i = 0; i < fieldNames.size(); ++i) {
+        parameterList += QString::fromLatin1("?p%1 ").arg(i);
+        parameterSelectList += QString::fromLatin1("%1 as ?p%2 ").arg(fieldNames.at(i)).arg(i);
+    }
+
     arguments->sparql
             = QLatin1String("SELECT ")
-            + fieldNames.join(QLatin1String(" "))
-            + QLatin1String(" WHERE {")
+            + parameterList
+            + QLatin1String(" WHERE { GRAPH ")
+            + qt_galleryItemTypeList[m_itemIndex].trackerGraph
+            + QLatin1String(" { SELECT ")
+            + parameterSelectList
+            + QLatin1String("WHERE {")
             + qt_galleryItemTypeList[m_itemIndex].typeFragment
             + join
             + completeJoin
@@ -1622,7 +1682,8 @@ void QGalleryTrackerSchema::populateItemArguments(
             + QLatin1String("}")
             + QLatin1String(" GROUP BY ")
             + qt_galleryItemTypeList[m_itemIndex].identity
-            + sortFragment;
+            + sortFragment
+            + QLatin1String("}}");
 
     if (offset > 0)
         arguments->sparql += QString::fromLatin1(" OFFSET %1").arg(offset);
