@@ -95,7 +95,6 @@ public:
     QGalleryAbstractResponse *createFilterResponse(QGalleryQueryRequest *request);
 
     QGalleryDBusInterfacePointer metaDataInterface();
-    QGalleryDBusInterfacePointer statisticsInterface();
 
     QGalleryTrackerChangeNotifier *getChangeNotifier( const QString &type );
     QGalleryTrackerChangeNotifier *createChangeNotifier(
