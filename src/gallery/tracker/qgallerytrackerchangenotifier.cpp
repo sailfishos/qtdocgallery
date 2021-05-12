@@ -60,7 +60,7 @@ QGalleryTrackerChangeNotifier::QGalleryTrackerChangeNotifier(
 
 void QGalleryTrackerChangeNotifier::itemsEdited(const QString &service)
 {
-    emit itemsChanged(QGalleryTrackerSchema::serviceUpdateId(service));
+    Q_EMIT itemsChanged(QGalleryTrackerSchema::serviceUpdateId(service));
 }
 
 void QGalleryTrackerChangeNotifier::graphUpdated(
@@ -78,7 +78,7 @@ void QGalleryTrackerChangeNotifier::graphUpdated(
             || (m_service == QLatin1String("nmm:Artist") && className.endsWith(QStringLiteral("nfo#Audio")))
             || (m_service == QLatin1String("nmm:Photo") && className.endsWith(QStringLiteral("nmm#ImageList")))
             || (m_service == QLatin1String("nfo:Audio") && className.endsWith(QStringLiteral("nmm#Playlist")))) {
-        emit itemsChanged(QGalleryTrackerSchema::serviceUpdateId(m_service));
+        Q_EMIT itemsChanged(QGalleryTrackerSchema::serviceUpdateId(m_service));
     }
 }
 

@@ -199,7 +199,7 @@ void QGalleryQueryRequest::setPropertyNames(const QStringList &names)
     if (d_func()->propertyNames != names) {
         d_func()->propertyNames = names;
 
-        emit propertyNamesChanged();
+        Q_EMIT propertyNamesChanged();
     }
 }
 
@@ -230,7 +230,7 @@ void QGalleryQueryRequest::setSortPropertyNames(const QStringList &names)
     if (d_func()->sortPropertyNames != names) {
         d_func()->sortPropertyNames = names;
 
-        emit sortPropertyNamesChanged();
+        Q_EMIT sortPropertyNamesChanged();
     }
 }
 
@@ -261,7 +261,7 @@ void QGalleryQueryRequest::setAutoUpdate(bool enabled)
     if (d_func()->autoUpdate != enabled) {
         d_func()->autoUpdate = enabled;
 
-        emit autoUpdateChanged();
+        Q_EMIT autoUpdateChanged();
     }
 }
 
@@ -288,7 +288,7 @@ void QGalleryQueryRequest::setOffset(int offset)
     if (d_func()->offset != boundedOffset) {
         d_func()->offset = boundedOffset;
 
-        emit offsetChanged();
+        Q_EMIT offsetChanged();
     }
 }
 
@@ -315,7 +315,7 @@ void QGalleryQueryRequest::setLimit(int limit)
     if (d_func()->limit != boundedLimit) {
         d_func()->limit = boundedLimit;
 
-        emit limitChanged();
+        Q_EMIT limitChanged();
     }
 }
 
@@ -341,7 +341,7 @@ void QGalleryQueryRequest::setRootType(const QString &itemType)
     if (d_func()->rootType != itemType) {
         d_func()->rootType = itemType;
 
-        emit rootTypeChanged();
+        Q_EMIT rootTypeChanged();
     }
 }
 
@@ -367,7 +367,7 @@ void QGalleryQueryRequest::setRootItem(const QVariant &itemId)
     if (d_func()->rootItem != itemId) {
         d_func()->rootItem = itemId;
 
-        emit rootItemChanged();
+        Q_EMIT rootItemChanged();
     }
 }
 
@@ -394,7 +394,7 @@ void QGalleryQueryRequest::setScope(QGalleryQueryRequest::Scope scope)
     if (d_func()->scope != scope) {
         d_func()->scope = scope;
 
-        emit scopeChanged();
+        Q_EMIT scopeChanged();
     }
 }
 
@@ -423,7 +423,7 @@ void QGalleryQueryRequest::setFilter(const QGalleryFilter &filter)
     if (d_func()->filter != filter) {
         d_func()->filter = filter;
 
-        emit filterChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -686,7 +686,7 @@ void QGalleryQueryRequest::setResponse(QGalleryAbstractResponse *response)
         d->internalResultSet = &d->nullResultSet;
     }
 
-    emit resultSetChanged(d->resultSet);
+    Q_EMIT resultSetChanged(d->resultSet);
 }
 
 QT_END_NAMESPACE_DOCGALLERY

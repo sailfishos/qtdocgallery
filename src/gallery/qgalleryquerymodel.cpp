@@ -266,7 +266,7 @@ void QGalleryQueryModelPrivate::_q_metaDataChanged(int index, int count, const Q
                 }
             }
 
-            emit q_ptr->dataChanged(
+            Q_EMIT q_ptr->dataChanged(
                     q_ptr->createIndex(index, start),
                     q_ptr->createIndex(index + count - 1, column - 1));
 
@@ -401,7 +401,7 @@ void QGalleryQueryModel::setRoleProperties(int column, const QHash<int, QString>
         d->updateRoles(column);
 
         if (d->rowCount > 0)
-            emit dataChanged(createIndex(0, column), createIndex(d->rowCount - 1, column));
+            Q_EMIT dataChanged(createIndex(0, column), createIndex(d->rowCount - 1, column));
     }
 }
 
@@ -961,7 +961,7 @@ bool QGalleryQueryModel::setHeaderData(
 
         d_ptr->headerData[section].insert(role, value);
 
-        emit headerDataChanged(orientation, section, section);
+        Q_EMIT headerDataChanged(orientation, section, section);
 
         return true;
     } else {

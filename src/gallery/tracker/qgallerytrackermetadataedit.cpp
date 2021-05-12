@@ -103,12 +103,12 @@ static QString _qt_createUpdateStatement(
 void QGalleryTrackerMetaDataEdit::commit()
 {
     if (m_values.isEmpty()) {
-        emit finished(this);
+        Q_EMIT finished(this);
     } else {
         m_metaDataInterface->call(
                 QLatin1String("SparqlUpdate"),
                 _qt_createUpdateStatement(m_service, m_values, m_oldValues));
-        emit finished(this);
+        Q_EMIT finished(this);
     }
 }
 

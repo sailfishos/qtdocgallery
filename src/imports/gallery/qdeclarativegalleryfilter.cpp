@@ -50,8 +50,8 @@ void QDeclarativeGalleryValueFilter::setValue(const QVariant &value)
     if (value != m_filter.value()) {
         m_filter.setValue(value);
 
-        emit valueChanged();
-        emit filterChanged();
+        Q_EMIT valueChanged();
+        Q_EMIT filterChanged();
     }
 }
 void QDeclarativeGalleryValueFilter::setPropertyName(const QString &name)
@@ -59,8 +59,8 @@ void QDeclarativeGalleryValueFilter::setPropertyName(const QString &name)
     if (name != m_filter.propertyName()) {
         m_filter.setPropertyName(name);
 
-        emit propertyNameChanged();
-        emit filterChanged();
+        Q_EMIT propertyNameChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -69,8 +69,8 @@ void QDeclarativeGalleryValueFilter::setNegated(bool negated)
     if (negated != m_filter.isNegated()) {
         m_filter.setNegated(negated);
 
-        emit negatedChanged();
-        emit filterChanged();
+        Q_EMIT negatedChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -84,8 +84,8 @@ void QDeclarativeGalleryStringFilter::setPropertyName(const QString &name)
     if (name != m_filter.propertyName()) {
         m_filter.setPropertyName(name);
 
-        emit propertyNameChanged();
-        emit filterChanged();
+        Q_EMIT propertyNameChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -94,8 +94,8 @@ void QDeclarativeGalleryStringFilter::setValue(const QString &value)
     if (value != m_filter.value()) {
         m_filter.setValue(value);
 
-        emit valueChanged();
-        emit filterChanged();
+        Q_EMIT valueChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -104,8 +104,8 @@ void QDeclarativeGalleryStringFilter::setNegated(bool negated)
     if (negated != m_filter.isNegated()) {
         m_filter.setNegated(negated);
 
-        emit negatedChanged();
-        emit filterChanged();
+        Q_EMIT negatedChanged();
+        Q_EMIT filterChanged();
     }
 }
 
@@ -503,7 +503,7 @@ void QDeclarativeGalleryFilterGroup::append(
     if (static_cast<QDeclarativeGalleryFilterGroup *>(filters->object)->m_complete) {
         connect(filter, SIGNAL(filterChanged()), filterGroup, SIGNAL(filterChanged()));
 
-        emit filterGroup->filterChanged();
+        Q_EMIT filterGroup->filterChanged();
     }
 }
 
@@ -534,7 +534,7 @@ void QDeclarativeGalleryFilterGroup::clear(
 
     list->clear();
 
-    emit filterGroup->filterChanged();
+    Q_EMIT filterGroup->filterChanged();
 }
 
 /*!

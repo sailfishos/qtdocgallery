@@ -39,8 +39,6 @@
 **
 ****************************************************************************/
 
-// precompiled headers can cause qobject.h to be included before tracker-sparql.h
-#undef signals
 #include <tracker-sparql.h>
 
 #include "qgallerytrackerresultset_p_p.h"
@@ -90,7 +88,7 @@ void QGalleryTrackerResultSetPrivate::query()
 
     parserThread.start(QThread::LowPriority);
 
-    emit q_func()->progressChanged(progressMaximum - 1, progressMaximum);
+    Q_EMIT q_func()->progressChanged(progressMaximum - 1, progressMaximum);
 }
 
 void QGalleryTrackerResultSetPrivate::run()
@@ -283,11 +281,11 @@ void QGalleryTrackerResultSetPrivate::removeItems(
 
     rowCount -= count;
 
-    emit q_func()->itemsRemoved(iIndex, count);
+    Q_EMIT q_func()->itemsRemoved(iIndex, count);
 
     if (originalIndex != currentIndex) {
-        emit q_func()->currentIndexChanged(currentIndex);
-        emit q_func()->currentItemChanged();
+        Q_EMIT q_func()->currentIndexChanged(currentIndex);
+        Q_EMIT q_func()->currentItemChanged();
     }
 }
 
@@ -299,7 +297,7 @@ void QGalleryTrackerResultSetPrivate::insertItems(
 
     rowCount += count;
 
-    emit q_func()->itemsInserted(iIndex, count);
+    Q_EMIT q_func()->itemsInserted(iIndex, count);
 }
 
 void QGalleryTrackerResultSetPrivate::syncUpdate(
@@ -315,10 +313,10 @@ void QGalleryTrackerResultSetPrivate::syncUpdate(
     rCache.offset = rIndex + rCount;
     iCache.cutoff = iIndex + iCount;
 
-    emit q_func()->metaDataChanged(iIndex, iCount, propertyKeys);
+    Q_EMIT q_func()->metaDataChanged(iIndex, iCount, propertyKeys);
 
     if (itemChanged)
-        emit q_func()->currentItemChanged();
+        Q_EMIT q_func()->currentItemChanged();
 }
 
 void QGalleryTrackerResultSetPrivate::syncReplace(
@@ -339,7 +337,7 @@ void QGalleryTrackerResultSetPrivate::syncReplace(
         insertItems(rIndex + rCount, iIndex, iCount);
 
     if (itemChanged)
-        emit q_func()->currentItemChanged();
+        Q_EMIT q_func()->currentItemChanged();
 }
 
 void QGalleryTrackerResultSetPrivate::syncFinish(const int rIndex, const int iIndex)
@@ -366,7 +364,7 @@ void QGalleryTrackerResultSetPrivate::syncFinish(const int rIndex, const int iIn
         iCache.cutoff = iCache.count;
 
     if (itemChanged)
-        emit q_func()->currentItemChanged();
+        Q_EMIT q_func()->currentItemChanged();
 
     flags |= SyncFinished;
 }
@@ -405,7 +403,7 @@ void QGalleryTrackerResultSetPrivate::_q_parseFinished()
     if (flags & Refresh)
         update();
     else
-        emit q_func()->progressChanged(progressMaximum, progressMaximum);
+        Q_EMIT q_func()->progressChanged(progressMaximum, progressMaximum);
 
     if (queryError != QDocumentGallery::NoError) {
         q_func()->finish(flags & Live);
@@ -419,7 +417,7 @@ void QGalleryTrackerResultSetPrivate::_q_editFinished(QGalleryTrackerMetaDataEdi
 {
     edit->deleteLater();
 
-    emit q_func()->itemEdited(m_service);
+    Q_EMIT q_func()->itemEdited(m_service);
 }
 
 QGalleryTrackerResultSet::QGalleryTrackerResultSet(
@@ -517,8 +515,8 @@ bool QGalleryTrackerResultSet::fetch(int index)
                 + ((d->currentIndex + d->rCache.offset - d->iCache.cutoff) * d->tableWidth);
     }
 
-    emit currentIndexChanged(d->currentIndex);
-    emit currentItemChanged();
+    Q_EMIT currentIndexChanged(d->currentIndex);
+    Q_EMIT currentItemChanged();
 
     return d->currentRow != 0;
 }
