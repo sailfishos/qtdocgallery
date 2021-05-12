@@ -152,7 +152,7 @@ public:
     bool event(QEvent *event);
 
 public Q_SLOTS:
-    void refresh(int serviceId = -1);
+    void refresh(const QList<int> &serviceIds = QList<int>());
 
 Q_SIGNALS:
     void itemEdited(const QString &service);

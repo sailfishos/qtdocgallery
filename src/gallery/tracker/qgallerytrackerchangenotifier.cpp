@@ -46,40 +46,54 @@
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
-QGalleryTrackerChangeNotifier::QGalleryTrackerChangeNotifier(
-        const QString &service,
-        const QGalleryDBusInterfacePointer &daemonInterface, QObject *parent)
-    : QObject(parent)
-    , m_daemonInterface(daemonInterface)
-    , m_service(service)
+static void notifierCallback(TrackerNotifier *self,
+                             char *service,
+                             char *graph,
+                             GPtrArray *events,
+                             gpointer user_data)
 {
-    connect(
-        m_daemonInterface.data(), SIGNAL(GraphUpdated(QString,QVector<QGalleryTrackerGraphUpdate>,QVector<QGalleryTrackerGraphUpdate>)),
-        this, SLOT(graphUpdated(QString,QVector<QGalleryTrackerGraphUpdate>,QVector<QGalleryTrackerGraphUpdate>)));
+    Q_UNUSED(self);
+    Q_UNUSED(service);
+    Q_UNUSED(events);
+    QGalleryTrackerChangeNotifier *galleryNotifier = static_cast<QGalleryTrackerChangeNotifier*>(user_data);
+
+    if (galleryNotifier) {
+        galleryNotifier->handleGraphUpdate(QString::fromLatin1(graph));
+    }
+}
+
+QGalleryTrackerChangeNotifier::QGalleryTrackerChangeNotifier(
+        TrackerSparqlConnection *connection,
+        QObject *parent)
+    : QObject(parent)
+{
+    m_notifier = tracker_sparql_connection_create_notifier(connection);
+    if (m_notifier) {
+        g_signal_connect(m_notifier, "events", G_CALLBACK(notifierCallback), this);
+    } else {
+        qWarning() << "Failed to create TrackerNotifier";
+    }
+}
+
+QGalleryTrackerChangeNotifier::~QGalleryTrackerChangeNotifier()
+{
+    if (m_notifier) {
+        g_object_unref(m_notifier);
+    }
+}
+
+void QGalleryTrackerChangeNotifier::handleGraphUpdate(const QString &graph)
+{
+    // graph in long url format, convert to tracker:GraphName
+    QString shortGraph = graph.mid(graph.lastIndexOf('/') + 1);
+    shortGraph.replace(QLatin1Char('#'), QLatin1Char(':'));
+
+    Q_EMIT itemsChanged(QGalleryTrackerSchema::graphUpdateIds(shortGraph));
 }
 
 void QGalleryTrackerChangeNotifier::itemsEdited(const QString &service)
 {
-    Q_EMIT itemsChanged(QGalleryTrackerSchema::serviceUpdateId(service));
-}
-
-void QGalleryTrackerChangeNotifier::graphUpdated(
-        const QString &className,
-        const QVector<QGalleryTrackerGraphUpdate> &,
-        const QVector<QGalleryTrackerGraphUpdate> &)
-{
-    /*
-     * className ends with e.g. ...nfo#Audio and m_service contains "nfo:Audio".
-     */
-    QString identifier(m_service);
-    identifier.replace(QLatin1Char(':'), QLatin1Char('#'));
-    if (className.endsWith(identifier)
-            || (m_service == QLatin1String("nfo:FileDataObject") && className.contains(QStringLiteral("/nfo#")))
-            || (m_service == QLatin1String("nmm:Artist") && className.endsWith(QStringLiteral("nfo#Audio")))
-            || (m_service == QLatin1String("nmm:Photo") && className.endsWith(QStringLiteral("nmm#ImageList")))
-            || (m_service == QLatin1String("nfo:Audio") && className.endsWith(QStringLiteral("nmm#Playlist")))) {
-        Q_EMIT itemsChanged(QGalleryTrackerSchema::serviceUpdateId(m_service));
-    }
+    Q_EMIT itemsChanged(QList<int>{QGalleryTrackerSchema::serviceUpdateId(service)});
 }
 
 QT_END_NAMESPACE_DOCGALLERY

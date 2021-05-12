@@ -661,19 +661,21 @@ void QGalleryTrackerResultSet::timerEvent(QTimerEvent *event)
    }
 }
 
-void QGalleryTrackerResultSet::refresh(int updateId)
+void QGalleryTrackerResultSet::refresh(const QList<int> &serviceIds)
 {
     Q_D(QGalleryTrackerResultSet);
 
-    if ((d->updateMask & updateId)
-            && !d->updateTimer.isActive()
-            && (d->flags & QGalleryTrackerResultSetPrivate::Live)) {
+    for (int id : serviceIds) {
+        if ((d->updateMask & id)
+                && !d->updateTimer.isActive()
+                && (d->flags & QGalleryTrackerResultSetPrivate::Live)) {
 
 
-        d->flags |= QGalleryTrackerResultSetPrivate::Refresh;
+            d->flags |= QGalleryTrackerResultSetPrivate::Refresh;
 
-        if (!(d->flags & QGalleryTrackerResultSetPrivate::Active)) {
-            d->updateTimer.start(100, this);
+            if (!(d->flags & QGalleryTrackerResultSetPrivate::Active)) {
+                d->updateTimer.start(100, this);
+            }
         }
     }
 }

@@ -83,6 +83,8 @@ public:
     QString itemType() const;
 
     static int serviceUpdateId(const QString &service);
+    static QList<int> graphUpdateIds(const QString &graph);
+    static QString graphForType(const QString &galleryType);
     static QString serviceForType( const QString &galleryType );
 
     QStringList supportedPropertyNames() const;

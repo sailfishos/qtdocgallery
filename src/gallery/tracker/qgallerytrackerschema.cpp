@@ -1177,6 +1177,19 @@ int QGalleryTrackerSchema::serviceUpdateId(const QString &service)
     return index != -1 ? itemTypes[index].updateId : FileId;
 }
 
+QList<int> QGalleryTrackerSchema::graphUpdateIds(const QString &graph)
+{
+    QList<int> result;
+    QGalleryItemTypeList itemTypes(qt_galleryItemTypeList);
+    for (int i = 0; i < itemTypes.count; ++i) {
+        if (itemTypes[i].trackerGraph == graph) {
+            result.append(itemTypes[i].updateId);
+        }
+    }
+
+    return result;
+}
+
 QStringList QGalleryTrackerSchema::supportedPropertyNames() const
 {
     QStringList propertyNames;
@@ -1660,6 +1673,7 @@ void QGalleryTrackerSchema::populateItemArguments(
     arguments->identityWidth = 1;
     arguments->tableWidth =  arguments->valueOffset + arguments->fieldNames.count();
     arguments->compositeOffset = arguments->valueOffset + valueNames.count();
+
     QString parameterList;
     QString parameterSelectList;
     for (int i = 0; i < fieldNames.size(); ++i) {
@@ -1714,6 +1728,17 @@ QString QGalleryTrackerSchema::serviceForType( const QString &galleryType )
     int index = typeList.indexOfType(galleryType);
     if (index != -1)
         return typeList[index].service;
+
+    qWarning() << galleryType << " does not exists";
+    return QString();
+}
+
+QString QGalleryTrackerSchema::graphForType(const QString &galleryType)
+{
+    QGalleryTypeList<QGalleryItemType> typeList(qt_galleryItemTypeList);
+    int index = typeList.indexOfType(galleryType);
+    if (index != -1)
+        return typeList[index].trackerGraph;
 
     qWarning() << galleryType << " does not exists";
     return QString();
