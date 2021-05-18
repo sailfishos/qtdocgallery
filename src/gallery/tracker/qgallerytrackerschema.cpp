@@ -788,10 +788,7 @@ static const QGalleryItemProperty qt_galleryFilePropertyList[] =
     QT_GALLERY_NFO_VISUAL_PROPERTIES
 };
 
-#define QT_GALLERY_FILE_COMPOSITE_PROPERTIES \
-    QT_GALLERY_COMPOSITE_PROPERTY_NO_DEPENDENCIES("filePath", String, QGalleryTrackerFilePathColumn::create, qt_writeFilePathCondition)
-
-    static const QGalleryCompositeProperty qt_galleryFileCompositePropertyList[] =
+static const QGalleryCompositeProperty qt_galleryFileCompositePropertyList[] =
 {
     QT_GALLERY_NFO_FILEDATAOBJECT_COMPOSITE_PROPERTIES,
     QT_GALLERY_NFO_VISUAL_COMPOSITE_PROPERTIES
