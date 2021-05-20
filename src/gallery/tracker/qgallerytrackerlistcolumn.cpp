@@ -119,6 +119,7 @@ QVariant QGalleryTrackerStringListColumn::toVariant(TrackerSparqlCursor *cursor,
 QVariant QGalleryTrackerUrlColumn::toVariant(TrackerSparqlCursor *cursor, int index) const
 {
     switch (TrackerSparqlValueType type = tracker_sparql_cursor_get_value_type(cursor, index)) {
+    case TRACKER_SPARQL_VALUE_TYPE_URI:
     case TRACKER_SPARQL_VALUE_TYPE_STRING:
         return QUrl::fromEncoded(tracker_sparql_cursor_get_string(cursor, index, 0), QUrl::StrictMode);
     case TRACKER_SPARQL_VALUE_TYPE_UNBOUND:
