@@ -58,27 +58,23 @@ public:
     QGalleryTrackerEditableResultSetPrivate(
             TrackerSparqlConnection *connection,
             QGalleryTrackerResultSetArguments *arguments,
-            const QGalleryDBusInterfacePointer &metaDataInterface,
             bool autoUpdate)
         : QGalleryTrackerResultSetPrivate(connection, arguments, autoUpdate)
-        , metaDataInterface(metaDataInterface)
         , fieldNames(arguments->fieldNames)
     {
     }
 
-    const QGalleryDBusInterfacePointer metaDataInterface;
     const QStringList fieldNames;
 };
 
 QGalleryTrackerEditableResultSet::QGalleryTrackerEditableResultSet(
         TrackerSparqlConnection *connection,
         QGalleryTrackerResultSetArguments *arguments,
-        const QGalleryDBusInterfacePointer &metaDataInterface,
         bool autoUpdate,
         QObject *parent)
     : QGalleryTrackerResultSet(
             *new QGalleryTrackerEditableResultSetPrivate(
-                connection, arguments, metaDataInterface, autoUpdate),
+                connection, arguments, autoUpdate),
             parent)
 {
 }
@@ -114,7 +110,7 @@ bool QGalleryTrackerEditableResultSet::setMetaData(int key, const QVariant &valu
 
     if (!edit) {
         edit = new QGalleryTrackerMetaDataEdit(
-                d->metaDataInterface,
+                d->connection,
                 (d->currentRow + 1)->toString(),
                 d->currentRow->toString(),
                 this);

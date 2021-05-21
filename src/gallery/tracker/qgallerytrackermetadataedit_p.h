@@ -54,11 +54,12 @@
 #define QGALLERYTRACKERMETADATAEDIT_P_H
 
 #include "qgalleryglobal.h"
-#include "qgallerydbusinterface_p.h"
 
 #include <QtCore/qstringlist.h>
 #include <QObject>
 #include <QMap>
+
+#include <tracker-sparql.h>
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
@@ -67,7 +68,7 @@ class QGalleryTrackerMetaDataEdit : public QObject
     Q_OBJECT
 public:
     QGalleryTrackerMetaDataEdit(
-            const QGalleryDBusInterfacePointer &metaDataInterface,
+            TrackerSparqlConnection *connection,
             const QString &uri,
             const QString &service,
             QObject *parent = Q_NULLPTR);
@@ -98,7 +99,7 @@ public Q_SLOTS:
 
 private:
     int m_index;
-    QGalleryDBusInterfacePointer m_metaDataInterface;
+    TrackerSparqlConnection *m_connection;
     QString m_uri;
     QString m_service;
     QMap<QString, QString> m_values;

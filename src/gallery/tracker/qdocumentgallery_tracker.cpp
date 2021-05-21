@@ -52,7 +52,6 @@
 #include "qgallerytrackerchangenotifier_p.h"
 #include "qgallerytrackerschema_p.h"
 #include "qgallerytrackereditableresultset_p.h"
-#include "qgallerydbusinterface_p.h"
 
 #include <QtCore/qmetaobject.h>
 #include <QtDBus/qdbusmetatype.h>
@@ -76,27 +75,13 @@ public:
     QGalleryAbstractResponse *createTypeResponse(QGalleryTypeRequest *request);
     QGalleryAbstractResponse *createFilterResponse(QGalleryQueryRequest *request);
 
-    QGalleryDBusInterfacePointer metaDataInterface();
-
     QGalleryAbstractResponse *createItemListResponse(
             QGalleryTrackerResultSetArguments *arguments,
             bool autoUpdate);
 
     TrackerSparqlConnection *connection;
-    QGalleryDBusInterfacePointer metaDataService;
     QGalleryTrackerChangeNotifier *m_notifier;
 };
-
-QGalleryDBusInterfacePointer QDocumentGalleryPrivate::metaDataInterface()
-{
-    if (!metaDataService) {
-        metaDataService = new QGalleryDBusInterface(
-                QLatin1String("org.freedesktop.Tracker1"),
-                QLatin1String("/org/freedesktop/Tracker1/Resources"),
-                "org.freedesktop.Tracker1.Resources");
-    }
-    return metaDataService;
-}
 
 QGalleryAbstractResponse *QDocumentGalleryPrivate::createItemResponse(QGalleryItemRequest *request)
 {
@@ -147,7 +132,7 @@ QGalleryAbstractResponse *QDocumentGalleryPrivate::createItemListResponse(
         return new QGalleryAbstractResponse(QDocumentGallery::ConnectionError);
 
     QGalleryTrackerResultSet *response = new QGalleryTrackerEditableResultSet(
-            connection, arguments, metaDataInterface(), autoUpdate);
+            connection, arguments, autoUpdate);
 
     if (autoUpdate) {
         if (m_notifier) {
