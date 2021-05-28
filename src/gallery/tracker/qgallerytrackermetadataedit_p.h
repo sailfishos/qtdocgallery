@@ -57,6 +57,8 @@
 #include "qgallerydbusinterface_p.h"
 
 #include <QtCore/qstringlist.h>
+#include <QObject>
+#include <QMap>
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
