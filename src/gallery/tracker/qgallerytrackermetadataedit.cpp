@@ -43,16 +43,18 @@
 
 #include <QtDBus/qdbuspendingcall.h>
 
+#include <QDebug>
+
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 QGalleryTrackerMetaDataEdit::QGalleryTrackerMetaDataEdit(
-        const QGalleryDBusInterfacePointer &metaDataInterface,
+        TrackerSparqlConnection *connection,
         const QString &uri,
         const QString &service,
         QObject *parent)
     : QObject(parent)
     , m_index(-1)
-    , m_metaDataInterface(metaDataInterface)
+    , m_connection(connection)
     , m_uri(uri)
     , m_service(service)
 {
@@ -82,6 +84,7 @@ static QString _qt_createUpdateStatement(
         const QMap<QString, QString> &m_values,
         const QMap<QString, QString> &m_oldValues)
 {
+    // FIXME: with Tracker3 this needs a graph to be defined
     QString statement;
     for (QMap<QString,QString>::const_iterator newIterator = m_values.constBegin(), oldIterator = m_oldValues.constBegin();
             newIterator != m_values.constEnd();
@@ -103,12 +106,18 @@ static QString _qt_createUpdateStatement(
 void QGalleryTrackerMetaDataEdit::commit()
 {
     if (m_values.isEmpty()) {
-        emit finished(this);
+        Q_EMIT finished(this);
     } else {
-        m_metaDataInterface->call(
-                QLatin1String("SparqlUpdate"),
-                _qt_createUpdateStatement(m_service, m_values, m_oldValues));
-        emit finished(this);
+        GError *error = 0;
+        tracker_sparql_connection_update(m_connection,
+                                         qPrintable(_qt_createUpdateStatement(m_service, m_values, m_oldValues)),
+                                         NULL, &error);
+        if (error) {
+            qWarning() << "Error executing sparql commit" << QString::fromUtf8(error->message);
+            g_error_free(error);
+        }
+
+        Q_EMIT finished(this);
     }
 }
 

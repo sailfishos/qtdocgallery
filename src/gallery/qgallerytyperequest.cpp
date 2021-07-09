@@ -80,16 +80,16 @@ public:
 
     void _q_currentItemChanged()
     {
-        emit q_func()->typeChanged();
+        Q_EMIT q_func()->typeChanged();
 
         if (!propertyKeys.isEmpty())
-            emit q_func()->metaDataChanged(propertyKeys);
+            Q_EMIT q_func()->metaDataChanged(propertyKeys);
     }
 
     void _q_metaDataChanged(int index, int, const QList<int> &keys)
     {
         if (index == 0)
-            emit q_func()->metaDataChanged(keys);
+            Q_EMIT q_func()->metaDataChanged(keys);
     }
 
     bool autoUpdate;
@@ -176,7 +176,7 @@ void QGalleryTypeRequest::setPropertyNames(const QStringList &names)
     if (d_func()->propertyNames != names) {
         d_func()->propertyNames = names;
 
-        emit propertyNamesChanged();
+        Q_EMIT propertyNamesChanged();
     }
 }
 
@@ -207,7 +207,7 @@ void QGalleryTypeRequest::setAutoUpdate(bool enabled)
     if (d_func()->autoUpdate != enabled) {
         d_func()->autoUpdate = enabled;
 
-        emit autoUpdateChanged();
+        Q_EMIT autoUpdateChanged();
     }
 }
 
@@ -233,7 +233,7 @@ void QGalleryTypeRequest::setItemType(const QString &itemType)
     if (d_func()->itemType != itemType) {
         d_func()->itemType = itemType;
 
-        emit itemTypeChanged();
+        Q_EMIT itemTypeChanged();
     }
 }
 
@@ -367,12 +367,12 @@ void QGalleryTypeRequest::setResponse(QGalleryAbstractResponse *response)
         d->internalResultSet = &d->nullResultSet;
     }
 
-    emit resultSetChanged(d->resultSet);
+    Q_EMIT resultSetChanged(d->resultSet);
 
     if (d->internalResultSet->itemCount() > 0)
         d->internalResultSet->fetch(0);
     else if (wasValid)
-        emit typeChanged();
+        Q_EMIT typeChanged();
 }
 
 QT_END_NAMESPACE_DOCGALLERY

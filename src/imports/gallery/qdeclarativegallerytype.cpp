@@ -86,7 +86,7 @@ void QDeclarativeGalleryType::setPropertyNames(const QStringList &names)
     if (m_updateStatus == Incomplete) {
         m_request.setPropertyNames(names);
 
-        emit propertyNamesChanged();
+        Q_EMIT propertyNamesChanged();
     }
 }
 
@@ -100,7 +100,7 @@ void QDeclarativeGalleryType::setAutoUpdate(bool enabled)
         else if (m_status == Idle)
             m_request.cancel();
 
-        emit autoUpdateChanged();
+        Q_EMIT autoUpdateChanged();
     }
 }
 
@@ -184,11 +184,11 @@ void QDeclarativeGalleryType::_q_stateChanged()
                 break;
             }
         }
-        emit statusChanged();
+        Q_EMIT statusChanged();
     } else if (m_status == Idle && !m_request.autoUpdate()) {
         m_request.cancel();
     } else {
-        emit statusChanged();
+        Q_EMIT statusChanged();
     }
 }
 
@@ -226,7 +226,7 @@ void QDeclarativeGalleryType::_q_typeChanged()
         m_propertyKeys.clear();
     }
 
-    emit availableChanged();
+    Q_EMIT availableChanged();
 }
 
 void QDeclarativeGalleryType::_q_metaDataChanged(const QList<int> &keys)
@@ -350,7 +350,7 @@ void QDeclarativeDocumentGalleryType::setItemType(QDeclarativeDocumentGallery::I
                 m_request.clear();
         }
 
-        emit itemTypeChanged();
+        Q_EMIT itemTypeChanged();
     }
 }
 

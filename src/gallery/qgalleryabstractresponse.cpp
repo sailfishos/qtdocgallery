@@ -233,7 +233,7 @@ void QGalleryAbstractResponse::cancel()
         if (d->waitLoop)
             d->waitLoop->exit();
 
-        emit canceled();
+        Q_EMIT canceled();
     }
 }
 
@@ -264,7 +264,7 @@ void QGalleryAbstractResponse::finish(bool idle)
         if (d->waitLoop)
             d->waitLoop->exit();
 
-        emit finished();
+        Q_EMIT finished();
     }
 }
 
@@ -282,7 +282,7 @@ void QGalleryAbstractResponse::resume()
     if (d->state == QGalleryAbstractRequest::Idle) {
         d->state = QGalleryAbstractRequest::Active;
 
-        emit resumed();
+        Q_EMIT resumed();
     }
 }
 
@@ -306,7 +306,7 @@ void QGalleryAbstractResponse::error(int error, const QString &errorString)
         if (d->waitLoop)
             d->waitLoop->exit();
 
-        emit finished();
+        Q_EMIT finished();
     }
 }
 

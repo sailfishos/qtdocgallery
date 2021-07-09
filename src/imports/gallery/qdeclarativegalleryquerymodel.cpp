@@ -94,7 +94,7 @@ void QDeclarativeGalleryQueryModel::setPropertyNames(const QStringList &names)
     if (m_updateStatus == Incomplete) {
         m_request.setPropertyNames(names);
 
-        emit propertyNamesChanged();
+        Q_EMIT propertyNamesChanged();
     }
 }
 
@@ -105,7 +105,7 @@ void QDeclarativeGalleryQueryModel::setSortPropertyNames(const QStringList &name
 
         deferredExecute();
 
-        emit sortPropertyNamesChanged();
+        Q_EMIT sortPropertyNamesChanged();
     }
 }
 
@@ -119,7 +119,7 @@ void QDeclarativeGalleryQueryModel::setAutoUpdate(bool enabled)
         else if (m_status == Idle)
             m_request.cancel();
 
-        emit autoUpdateChanged();
+        Q_EMIT autoUpdateChanged();
     }
 }
 
@@ -130,7 +130,7 @@ void QDeclarativeGalleryQueryModel::setScope(Scope scope)
 
         deferredExecute();
 
-        emit scopeChanged();
+        Q_EMIT scopeChanged();
     }
 }
 
@@ -141,7 +141,7 @@ void QDeclarativeGalleryQueryModel::setRootItem(const QVariant &itemId)
 
         deferredExecute();
 
-        emit rootItemChanged();
+        Q_EMIT rootItemChanged();
     }
 }
 
@@ -157,7 +157,7 @@ void QDeclarativeGalleryQueryModel::setFilter(QDeclarativeGalleryFilterBase *fil
 
     deferredExecute();
 
-    emit filterChanged();
+    Q_EMIT filterChanged();
 }
 
 void QDeclarativeGalleryQueryModel::setOffset(int offset)
@@ -167,7 +167,7 @@ void QDeclarativeGalleryQueryModel::setOffset(int offset)
 
         deferredExecute();
 
-        emit offsetChanged();
+        Q_EMIT offsetChanged();
     }
 }
 
@@ -178,7 +178,7 @@ void QDeclarativeGalleryQueryModel::setLimit(int limit)
 
         deferredExecute();
 
-        emit limitChanged();
+        Q_EMIT limitChanged();
     }
 }
 
@@ -410,11 +410,11 @@ void QDeclarativeGalleryQueryModel::_q_stateChanged()
                 break;
             }
         }
-        emit statusChanged();
+        Q_EMIT statusChanged();
     } else if (m_status == Idle && !m_request.autoUpdate()) {
         m_request.cancel();
     } else {
-        emit statusChanged();
+        Q_EMIT statusChanged();
     }
 }
 
@@ -468,7 +468,7 @@ void QDeclarativeGalleryQueryModel::_q_setResultSet(QGalleryResultSet *resultSet
         }
     }
 
-    emit countChanged();
+    Q_EMIT countChanged();
 }
 
 void QDeclarativeGalleryQueryModel::_q_itemsInserted(int index, int count)
@@ -477,7 +477,7 @@ void QDeclarativeGalleryQueryModel::_q_itemsInserted(int index, int count)
     m_rowCount += count;
     endInsertRows();
 
-    emit countChanged();
+    Q_EMIT countChanged();
 }
 
 void QDeclarativeGalleryQueryModel::_q_itemsRemoved(int index, int count)
@@ -486,7 +486,7 @@ void QDeclarativeGalleryQueryModel::_q_itemsRemoved(int index, int count)
     m_rowCount -= count;
     endRemoveRows();
 
-    emit countChanged();
+    Q_EMIT countChanged();
 }
 
 void QDeclarativeGalleryQueryModel::_q_itemsMoved(int from, int to, int count)
@@ -497,7 +497,7 @@ void QDeclarativeGalleryQueryModel::_q_itemsMoved(int from, int to, int count)
 
 void QDeclarativeGalleryQueryModel::_q_itemsChanged(int index, int count)
 {
-    emit dataChanged(createIndex(index, 0), createIndex(index + count - 1, 0));
+    Q_EMIT dataChanged(createIndex(index, 0), createIndex(index + count - 1, 0));
 }
 
 /*!
@@ -670,7 +670,7 @@ void QDeclarativeDocumentGalleryModel::setRootType(QDeclarativeDocumentGallery::
     if (m_updateStatus == Incomplete) {
         m_request.setRootType(QDeclarativeDocumentGallery::toString(itemType));
 
-        emit rootTypeChanged();
+        Q_EMIT rootTypeChanged();
     }
 }
 

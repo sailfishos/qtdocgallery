@@ -53,9 +53,11 @@
 #ifndef QGALLERYTRACKERCHANGENOTIFIER_P_H
 #define QGALLERYTRACKERCHANGENOTIFIER_P_H
 
-#include "qgallerydbusinterface_p.h"
+#include "qgalleryglobal.h"
 
 #include <QtCore/qobject.h>
+
+#include <libtracker-sparql/tracker-sparql.h>
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
@@ -64,25 +66,20 @@ class QGalleryTrackerChangeNotifier : public QObject
     Q_OBJECT
 public:
     QGalleryTrackerChangeNotifier(
-            const QString &service,
-            const QGalleryDBusInterfacePointer &daemonInterface,
+            TrackerSparqlConnection *connection,
             QObject *parent = Q_NULLPTR);
+    ~QGalleryTrackerChangeNotifier();
+
+    void handleGraphUpdate(const QString &graph);
 
 public Q_SLOTS:
     void itemsEdited(const QString &service);
 
 Q_SIGNALS:
-    void itemsChanged(int updateId);
-
-private Q_SLOTS:
-    void graphUpdated(
-            const QString &className,
-            const QVector<QGalleryTrackerGraphUpdate> &deletes,
-            const QVector<QGalleryTrackerGraphUpdate> &inserts);
+    void itemsChanged(const QList<int> &updateIds);
 
 private:
-    const QGalleryDBusInterfacePointer m_daemonInterface;
-    QString m_service;
+    TrackerNotifier *m_notifier;
 };
 
 QT_END_NAMESPACE_DOCGALLERY

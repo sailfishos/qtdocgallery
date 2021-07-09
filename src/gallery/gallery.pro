@@ -4,6 +4,8 @@ QT = core
 
 load(qt_module)
 
+CONFIG += no_keywords
+
 PUBLIC_HEADERS += \
     qgalleryglobal.h \
     qabstractgallery.h \

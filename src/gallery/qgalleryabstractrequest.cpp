@@ -56,14 +56,14 @@ void QGalleryAbstractRequestPrivate::_q_finished()
 
             state = QGalleryAbstractRequest::Error;
 
-            emit q_func()->error(error, errorString);
-            emit q_func()->errorChanged();
-            emit q_func()->stateChanged(state);
+            Q_EMIT q_func()->error(error, errorString);
+            Q_EMIT q_func()->errorChanged();
+            Q_EMIT q_func()->stateChanged(state);
         } else if (state == QGalleryAbstractRequest::Idle) {
             if (!response->isIdle()) {
                 state = QGalleryAbstractRequest::Finished;
 
-                emit q_func()->stateChanged(state);
+                Q_EMIT q_func()->stateChanged(state);
             }
         } else if (response->isIdle()) {
             state = QGalleryAbstractRequest::Idle;
@@ -71,17 +71,17 @@ void QGalleryAbstractRequestPrivate::_q_finished()
             if (!wasIdle) {
                 wasIdle = true;
 
-                emit q_func()->finished();
+                Q_EMIT q_func()->finished();
             }
 
-            emit q_func()->stateChanged(state);
+            Q_EMIT q_func()->stateChanged(state);
         } else if (!response->isActive()) {
             state = QGalleryAbstractRequest::Finished;
 
             if (!wasIdle)
-                emit q_func()->finished();
+                Q_EMIT q_func()->finished();
 
-            emit q_func()->stateChanged(state);
+            Q_EMIT q_func()->stateChanged(state);
         }
     }
 }
@@ -92,11 +92,11 @@ void QGalleryAbstractRequestPrivate::_q_canceled()
         if (!wasIdle) {
             state = QGalleryAbstractRequest::Canceled;
 
-            emit q_func()->canceled();
+            Q_EMIT q_func()->canceled();
         } else {
             state = QGalleryAbstractRequest::Finished;
         }
-        emit q_func()->stateChanged(state);
+        Q_EMIT q_func()->stateChanged(state);
     }
 }
 
@@ -105,7 +105,7 @@ void QGalleryAbstractRequestPrivate::_q_resumed()
     if (state == QGalleryAbstractRequest::Idle && !response->isIdle()) {
         state = QGalleryAbstractRequest::Active;
 
-        emit q_func()->stateChanged(state);
+        Q_EMIT q_func()->stateChanged(state);
     }
 }
 
@@ -114,7 +114,7 @@ void QGalleryAbstractRequestPrivate::_q_progressChanged(int current, int maximum
     currentProgress = current;
     maximumProgress = maximum;
 
-    emit q_func()->progressChanged(current, maximum);
+    Q_EMIT q_func()->progressChanged(current, maximum);
 }
 
 /*!
@@ -264,8 +264,8 @@ void QGalleryAbstractRequest::setGallery(QAbstractGallery *gallery)
     if (d_ptr->gallery.data() != gallery) {
         d_ptr->gallery = gallery;
 
-        emit galleryChanged();
-        emit supportedChanged();
+        Q_EMIT galleryChanged();
+        Q_EMIT supportedChanged();
     }
 }
 
@@ -414,8 +414,8 @@ void QGalleryAbstractRequest::execute()
             setResponse(0);
         }
 
-        emit error(d_ptr->error, d_ptr->errorString);
-        emit errorChanged();
+        Q_EMIT error(d_ptr->error, d_ptr->errorString);
+        Q_EMIT errorChanged();
     } else {
         QScopedPointer<QGalleryAbstractResponse> oldResponse(
                 d_ptr->gallery.data()->createResponse(this));
@@ -433,8 +433,8 @@ void QGalleryAbstractRequest::execute()
                 if (oldResponse)
                     setResponse(0);
 
-                emit error(d_ptr->error, d_ptr->errorString);
-                emit errorChanged();
+                Q_EMIT error(d_ptr->error, d_ptr->errorString);
+                Q_EMIT errorChanged();
             } else {
                 if (d_ptr->response->isActive()) {
                     d_ptr->state = Active;
@@ -469,25 +469,25 @@ void QGalleryAbstractRequest::execute()
 
             oldResponse.reset();
 
-            emit error(d_ptr->error, d_ptr->errorString);
-            emit errorChanged();
+            Q_EMIT error(d_ptr->error, d_ptr->errorString);
+            Q_EMIT errorChanged();
         }
 
         if (d_ptr->currentProgress != 0 || d_ptr->maximumProgress != 0) {
             d_ptr->currentProgress = 0;
             d_ptr->maximumProgress = 0;
 
-            emit progressChanged(0, 0);
+            Q_EMIT progressChanged(0, 0);
         }
 
         if (d_ptr->state == Finished || d_ptr->state == Idle)
-            emit finished();
+            Q_EMIT finished();
     }
 
     if (oldError != NoError && d_ptr->error == NoError)
-        emit errorChanged();
+        Q_EMIT errorChanged();
 
-    emit stateChanged(d_ptr->state);
+    Q_EMIT stateChanged(d_ptr->state);
 }
 
 /*!
@@ -502,7 +502,7 @@ void QGalleryAbstractRequest::cancel()
         d_ptr->response->cancel();
 
         if (d_ptr->state == Canceling)
-            emit stateChanged(d_ptr->state);
+            Q_EMIT stateChanged(d_ptr->state);
     }
 }
 
@@ -532,18 +532,18 @@ void QGalleryAbstractRequest::clear()
             d_ptr->currentProgress = 0;
             d_ptr->maximumProgress = 0;
 
-            emit progressChanged(0, 0);
+            Q_EMIT progressChanged(0, 0);
         }
 
-        emit stateChanged(d_ptr->state);
+        Q_EMIT stateChanged(d_ptr->state);
     } else if (d_ptr->state == Error) {
         d_ptr->state = Inactive;
 
-        emit stateChanged(d_ptr->state);
+        Q_EMIT stateChanged(d_ptr->state);
     }
 
     if (oldError != NoError)
-        emit errorChanged();
+        Q_EMIT errorChanged();
 }
 
 /*!

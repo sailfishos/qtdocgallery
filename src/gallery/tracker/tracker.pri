@@ -3,10 +3,9 @@ INCLUDEPATH += $$PWD
 QT += dbus
 
 CONFIG += link_pkgconfig
-PKGCONFIG_PRIVATE += tracker-sparql-2.0
+PKGCONFIG_PRIVATE += tracker-sparql-3.0
 
 PRIVATE_HEADERS += \
-        $$PWD/qgallerydbusinterface_p.h \
         $$PWD/qgallerytrackerchangenotifier_p.h \
         $$PWD/qgallerytrackereditableresultset_p.h \
         $$PWD/qgallerytrackerlistcolumn_p.h \
@@ -16,7 +15,6 @@ PRIVATE_HEADERS += \
         $$PWD/qgallerytrackerschema_p.h
 
 SOURCES += \
-        $$PWD/qgallerydbusinterface.cpp \
         $$PWD/qdocumentgallery_tracker.cpp \
         $$PWD/qgallerytrackerchangenotifier.cpp \
         $$PWD/qgallerytrackereditableresultset.cpp \

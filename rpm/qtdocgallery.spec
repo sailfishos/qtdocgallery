@@ -1,10 +1,9 @@
 Name:       qt5-qtdocgallery
 Summary:    Qt document gallery optional module
-Version:    5.0.0
+Version:    5.2.0
 Release:    1
-Group:      System/Libraries
 License:    LGPLv2
-URL:        https://github.com/mer-packages/qtdocgallery
+URL:        https://github.com/sailfishos/qtdocgallery
 Source0:    %{name}-%{version}.tar.bz2
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -12,8 +11,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Test)
-BuildRequires:  pkgconfig(dbus-1)
-BuildRequires:  pkgconfig(tracker-sparql-2.0)
+BuildRequires:  pkgconfig(tracker-sparql-3.0)
 # This seems like a good place to pull in the tracker daemons
 Requires:       tracker-miners
 
@@ -37,10 +35,9 @@ touch .git
 %qmake5  \
     tracker_enabled=yes \
     MODULE_VERSION=5.0.0
-make %{?jobs:-j%jobs}
+%make_build
 
 %install
-rm -rf %{buildroot}
 %qmake_install
 
 %post -p /sbin/ldconfig

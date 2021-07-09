@@ -55,7 +55,6 @@
 
 #include <qgalleryresultset.h>
 
-#include "qgallerydbusinterface_p.h"
 #include "qgallerytrackerlistcolumn_p.h"
 
 class QDBusPendingCallWatcher;
@@ -64,7 +63,6 @@ typedef struct _TrackerSparqlConnection TrackerSparqlConnection;
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
-class QGalleryDBusInterfaceFactory;
 class QGalleryTrackerImageColumn;
 class QGalleryTrackerSchema;
 
@@ -152,7 +150,7 @@ public:
     bool event(QEvent *event);
 
 public Q_SLOTS:
-    void refresh(int serviceId = -1);
+    void refresh(const QList<int> &serviceIds = QList<int>());
 
 Q_SIGNALS:
     void itemEdited(const QString &service);

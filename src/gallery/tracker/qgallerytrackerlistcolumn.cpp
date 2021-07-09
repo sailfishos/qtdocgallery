@@ -39,8 +39,6 @@
 **
 ****************************************************************************/
 
-// precompiled headers can cause qobject.h to be included before tracker-sparql.h
-#undef signals
 #include <tracker-sparql.h>
 
 #include "qgallerytrackerlistcolumn_p.h"
@@ -121,6 +119,7 @@ QVariant QGalleryTrackerStringListColumn::toVariant(TrackerSparqlCursor *cursor,
 QVariant QGalleryTrackerUrlColumn::toVariant(TrackerSparqlCursor *cursor, int index) const
 {
     switch (TrackerSparqlValueType type = tracker_sparql_cursor_get_value_type(cursor, index)) {
+    case TRACKER_SPARQL_VALUE_TYPE_URI:
     case TRACKER_SPARQL_VALUE_TYPE_STRING:
         return QUrl::fromEncoded(tracker_sparql_cursor_get_string(cursor, index, 0), QUrl::StrictMode);
     case TRACKER_SPARQL_VALUE_TYPE_UNBOUND:
@@ -296,13 +295,13 @@ QGalleryTrackerCompositeColumn *QGalleryTrackerFileExtensionColumn::create(const
 QVariant QGalleryTrackerOrientationColumn::value(QVector<QVariant>::const_iterator row) const
 {
     QString orientation = (row + m_column)->toString();
-    if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-top"))
+    if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-top"))
         return 0;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-left"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-left"))
         return 90;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-bottom"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-bottom"))
         return 180;
-    else if (orientation == QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#orientation-right"))
+    else if (orientation == QLatin1String("http://tracker.api.gnome.org/ontology/v3/nfo#orientation-right"))
         return 270;
     else
         return 0;
