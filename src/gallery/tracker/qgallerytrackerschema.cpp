@@ -774,11 +774,14 @@ static bool qt_writeOrientationCondition(
     QT_GALLERY_ITEM_PROPERTY("lastModified" , "nfo:fileLastModified(nie:isStoredAs(?x))" , DateTime, CanRead | CanSort | CanFilter)
 
 // For FileSystem graph
+// mimeType currently available only for directories. but as it's handy to separate those from normal files,
+// providing a bit special kind of property rule
 #define QT_GALLERY_NFO_FILEDATAOBJECT_PROPERTIES_FS \
     QT_GALLERY_ITEM_PROPERTY("url", "?x", Url, CanRead | CanSort | CanFilter | IsResource), \
     QT_GALLERY_ITEM_PROPERTY("fileName"     , "nfo:fileName(?x)"         , String  , CanRead | CanSort | CanFilter), \
     QT_GALLERY_ITEM_PROPERTY("fileSize"     , "nfo:fileSize(?x)"         , LongLong, CanRead | CanSort | CanFilter), \
-    QT_GALLERY_ITEM_PROPERTY("lastModified" , "nfo:fileLastModified(?x)" , DateTime, CanRead | CanSort | CanFilter)
+    QT_GALLERY_ITEM_PROPERTY("lastModified" , "nfo:fileLastModified(?x)" , DateTime, CanRead | CanSort | CanFilter), \
+    QT_GALLERY_LINKED_PROPERTY("mimeType"   , "tracker:coalesce(nie:mimeType(?directoryUrn),\"\")", " . ?x nie:interpretedAs ?directoryUrn . ", String, CanRead | CanSort | CanFilter)
 
 
 static const QGalleryItemProperty qt_galleryOrientationPropertyList[] = {
