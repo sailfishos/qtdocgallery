@@ -2,7 +2,7 @@ Name:       qt5-qtdocgallery
 Summary:    Qt document gallery optional module
 Version:    5.2.0
 Release:    1
-License:    LGPLv2
+License:    LGPLv2 or GPLv3 or Qt Commercial
 URL:        https://github.com/sailfishos/qtdocgallery
 Source0:    %{name}-%{version}.tar.bz2
 Requires(post): /sbin/ldconfig
@@ -20,7 +20,6 @@ Qt document gallery optional module
 
 %package devel
 Summary:    Development files for qtdocgallery
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 
 %description devel
@@ -46,6 +45,7 @@ touch .git
 
 %files
 %defattr(-,root,root,-)
+%license LICENSE.LGPLv21 LGPL_EXCEPTION.txt LICENSE.GPLv3
 %{_libdir}/libQt5DocGallery.so.*
 %{_libdir}/qt5/qml/QtDocGallery/*
 
