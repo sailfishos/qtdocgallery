@@ -281,7 +281,7 @@ namespace
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String("?x"), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
-    QLatin1String("?x a "#RdfPrefix":"#RdfType" . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }"), \
+    QLatin1String("?x a "#RdfPrefix":"#RdfType" . ?x nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . "), \
     0, \
     QGalleryTypePrefix(#Prefix"::"), \
     QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
@@ -346,7 +346,7 @@ namespace
     QLatin1String(#RdfPrefix":"#RdfType), \
     QLatin1String(#Identity), \
     QLatin1String("/"#RdfPrefix"#"#RdfType), \
-    QLatin1String("?x a "#RdfPrefix":"#RdfType " . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }"), \
+    QLatin1String("?x a "#RdfPrefix":"#RdfType " . ?x nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . "), \
     #Identity"!=''", \
     QGalleryTypePrefix(#Prefix"::"), \
     QGalleryItemPropertyList(qt_gallery##PropertyGroup##PropertyList), \
@@ -1088,9 +1088,9 @@ static const QGalleryItemType qt_galleryItemTypeList[] =
     QT_GALLERY_ITEM_TYPE(Video     , "tracker:Video",       nmm, Video            , video     , Video),
     QT_GALLERY_ITEM_TYPE(Playlist  , "tracker:Audio",       nmm, Playlist         , playlist  , Playlist),
     QT_GALLERY_ITEM_TYPE(Text      , "tracker:Documents",   nfo, PlainTextDocument, text      , Text),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , "tracker:Audio", nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", artist     , Artist),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, "tracker:Audio", nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", albumArtist, AlbumArtist),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , "tracker:Audio", nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?track . ?x nie:isStoredAs ?file GRAPH tracker:FileSystem { ?file nie:dataSource ?dataSource . ?dataSource tracker:available true . }", album     , Album),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , "tracker:Audio", nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", artist     , Artist),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, "tracker:Audio", nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", albumArtist, AlbumArtist),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , "tracker:Audio", nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?track . ?x nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", album     , Album),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(PhotoAlbum, "tracker:Pictures", nmm, ImageList , photoAlbum, PhotoAlbum),
     QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(AudioGenre, "tracker:Audio", nmm, MusicPiece, nfo:genre(?x), audioGenre, AudioGenre),
 };
