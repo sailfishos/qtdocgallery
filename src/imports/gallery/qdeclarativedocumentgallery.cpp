@@ -46,10 +46,10 @@
 #include <QtCore/qmetaobject.h>
 #include <QtQml/qqmlcontext.h>
 #include <QtQml/qqmlengine.h>
+#include <QCoreApplication>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE_DOCGALLERY
-
-Q_GLOBAL_STATIC(QDocumentGallery, qt_declarativeDocumentGalleryInstance)
 
 QString QDeclarativeDocumentGallery::toString(ItemType type)
 {
@@ -80,7 +80,19 @@ QAbstractGallery *QDeclarativeDocumentGallery::gallery(QObject *object)
         }
     }
 #endif
-    return qt_declarativeDocumentGalleryInstance();
+    static QDocumentGallery* instance = nullptr;
+
+    if (!instance) {
+        QCoreApplication *app = QCoreApplication::instance();
+        if (!app) {
+            qWarning() << "No QCoreApplication, refusing to create QDocumentGallery instance for QML";
+            return nullptr;
+        }
+
+        instance = new QDocumentGallery(app);
+    }
+
+    return instance;
 }
 
 QT_END_NAMESPACE_DOCGALLERY
