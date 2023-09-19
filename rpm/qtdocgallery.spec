@@ -47,16 +47,16 @@ touch .git
 %defattr(-,root,root,-)
 %license LICENSE.LGPLv21 LGPL_EXCEPTION.txt LICENSE.GPLv3
 %{_libdir}/libQt5DocGallery.so.*
-%{_libdir}/qt5/qml/QtDocGallery/*
+%{_qt5_archdatadir}/qml/QtDocGallery/*
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/qt5/QtDocGallery/*
-%{_libdir}/libQt5DocGallery.so
-%{_libdir}/pkgconfig/*.pc
-%{_libdir}/libQt5DocGallery.prl
-%{_libdir}/libQt5DocGallery.la
-%{_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfig.cmake
-%{_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfigVersion.cmake
-%{_datadir}/qt5/mkspecs/modules/qt_lib_docgallery.pri
-%{_datadir}/qt5/mkspecs/modules/qt_lib_docgallery_private.pri
+%{_qt5_includedir}/QtDocGallery/*
+%{_qt5_libdir}/libQt5DocGallery.so
+%{_qt5_libdir}/pkgconfig/*.pc
+%{_qt5_libdir}/libQt5DocGallery.prl
+%{_qt5_libdir}/libQt5DocGallery.la
+%{_qt5_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfig.cmake
+%{_qt5_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfigVersion.cmake
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_docgallery.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_docgallery_private.pri
