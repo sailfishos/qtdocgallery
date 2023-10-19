@@ -87,7 +87,11 @@ struct Q_GALLERY_EXPORT QGalleryProperty
         return QGalleryMetaDataFilter(QLatin1String(m_name), string, QGalleryFilter::Wildcard); }
     QGalleryMetaDataFilter regExp(const QString &rx) const {
         return QGalleryMetaDataFilter(QLatin1String(m_name), rx, QGalleryFilter::RegExp); }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QGalleryMetaDataFilter regExp(const QRegularExpression &rx) const {
+#else
     QGalleryMetaDataFilter regExp(const QRegExp &rx) const {
+#endif
         return QGalleryMetaDataFilter(QLatin1String(m_name), rx, QGalleryFilter::RegExp); }
 
     QString ascending() const { return QLatin1Char('+') + QLatin1String(m_name); }

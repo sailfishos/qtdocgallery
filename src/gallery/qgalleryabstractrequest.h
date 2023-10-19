@@ -47,7 +47,10 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_HEADER
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("qabstractgallery.h");
+#endif
+
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 class QAbstractGallery;
@@ -144,6 +147,5 @@ private:
 };
 
 QT_END_NAMESPACE_DOCGALLERY
-QT_END_HEADER
 
 #endif

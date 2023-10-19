@@ -1,7 +1,6 @@
 TARGET = QtDocGallery
 MODULE = docgallery
 QT = core
-
 load(qt_module)
 
 CONFIG += no_keywords

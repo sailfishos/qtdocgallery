@@ -102,7 +102,11 @@ QVariant QGalleryTrackerStringListColumn::toVariant(TrackerSparqlCursor *cursor,
 {
     switch (TrackerSparqlValueType type = tracker_sparql_cursor_get_value_type(cursor, index)) {
     case TRACKER_SPARQL_VALUE_TYPE_STRING:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        return QString::fromUtf8(tracker_sparql_cursor_get_string(cursor, index, 0)).split(m_separatorChar, Qt::SkipEmptyParts);
+#else
         return QString::fromUtf8(tracker_sparql_cursor_get_string(cursor, index, 0)).split(m_separatorChar, QString::SkipEmptyParts);
+#endif
     case TRACKER_SPARQL_VALUE_TYPE_UNBOUND:
     case TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE:
         break;

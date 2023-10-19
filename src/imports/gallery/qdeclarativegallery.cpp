@@ -67,7 +67,11 @@ public:
         int major = 5;
         int minor = 0;
         qmlRegisterUncreatableType<QDeclarativeDocumentGallery>(uri, major, minor, "DocumentGallery", QDeclarativeDocumentGallery::tr("DocumentGallery is a namespace class"));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        qmlRegisterAnonymousType<QDeclarativeGalleryFilterBase>(uri, 0);
+#else
         qmlRegisterType<QDeclarativeGalleryFilterBase>();
+#endif
         qmlRegisterType<QDeclarativeGalleryEqualsFilter>(uri, major, minor, "GalleryEqualsFilter");
         qmlRegisterType<QDeclarativeGalleryLessThanFilter>(uri, major, minor, "GalleryLessThanFilter");
         qmlRegisterType<QDeclarativeGalleryLessThanEqualsFilter>(uri, major, minor, "GalleryLessThanEqualsFilter");

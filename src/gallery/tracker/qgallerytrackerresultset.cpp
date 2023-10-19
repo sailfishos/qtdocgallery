@@ -44,8 +44,11 @@
 #include "qgallerytrackerresultset_p_p.h"
 
 #include "qgallerytrackermetadataedit_p.h"
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QTimer>
+#else
 #include <QtCore/qdatetime.h>
+#endif
 #include <QtDBus/qdbusreply.h>
 
 #include <qdocumentgallery.h>
@@ -275,7 +278,11 @@ void QGalleryTrackerResultSetPrivate::removeItems(
             currentRow = rCache.values.constBegin()
                     + ((currentIndex + rCache.offset - iCache.cutoff) * tableWidth);
         } else {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            currentRow = rCache.values.begin();
+#else
             currentRow = 0;
+#endif
         }
     }
 
@@ -371,7 +378,11 @@ void QGalleryTrackerResultSetPrivate::syncFinish(const int rIndex, const int iIn
 
 bool QGalleryTrackerResultSetPrivate::waitForSyncFinish(int msecs)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QTimer timer;
+#else
     QTime timer;
+#endif
     timer.start();
 
     do {
@@ -383,8 +394,11 @@ bool QGalleryTrackerResultSetPrivate::waitForSyncFinish(int msecs)
 
         if (!syncEvents.waitForEvent(msecs))
             return false;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    } while ((msecs -= timer.remainingTime()) > 0);
+#else
     } while ((msecs -= timer.restart()) > 0);
-
+#endif
     return false;
 }
 
@@ -506,7 +520,11 @@ bool QGalleryTrackerResultSet::fetch(int index)
     d->currentIndex = index;
 
     if (d->currentIndex < 0 || d->currentIndex >= d->rowCount) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        d->currentRow = d->rCache.values.begin();
+#else
         d->currentRow = 0;
+#endif
     } else if (d->currentIndex < d->iCache.cutoff) {
         d->currentRow = d->iCache.values.constBegin() + (d->currentIndex * d->tableWidth);
     } else {
@@ -524,28 +542,43 @@ bool QGalleryTrackerResultSet::fetch(int index)
 QVariant QGalleryTrackerResultSet::itemId() const
 {
     Q_D(const QGalleryTrackerResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    return d->currentRow->isNull()
+               ? QVariant()
+               : d->idColumn->value(d->currentRow);
+#else
     return d->currentRow
             ? d->idColumn->value(d->currentRow)
             : QVariant();
+#endif
 }
 
 QUrl QGalleryTrackerResultSet::itemUrl() const
 {
     Q_D(const QGalleryTrackerResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    return d->currentRow->isNull()
+               ? QUrl()
+               : d->urlColumn->value(d->currentRow).toUrl();
+#else
     return d->currentRow
             ? d->urlColumn->value(d->currentRow).toUrl()
             : QUrl();
+#endif
 }
 
 QString QGalleryTrackerResultSet::itemType() const
 {
     Q_D(const QGalleryTrackerResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    return d->currentRow->isNull()
+               ? QString()
+               : d->typeColumn->value(d->currentRow).toString();
+#else
     return d->currentRow
             ? d->typeColumn->value(d->currentRow).toString()
             : QString();
+#endif
 }
 
 QList<QGalleryResource> QGalleryTrackerResultSet::resources() const
@@ -553,8 +586,11 @@ QList<QGalleryResource> QGalleryTrackerResultSet::resources() const
     Q_D(const QGalleryTrackerResultSet);
 
     QList<QGalleryResource> resources;
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (!d->currentRow->isNull()) {
+#else
     if (d->currentRow) {
+#endif
         const QUrl url = d->urlColumn->value(d->currentRow).toUrl();
 
         if (!url.isEmpty()) {
@@ -579,8 +615,11 @@ QList<QGalleryResource> QGalleryTrackerResultSet::resources() const
 QVariant QGalleryTrackerResultSet::metaData(int key) const
 {
     Q_D(const QGalleryTrackerResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (d->currentRow->isNull() || key < d->valueOffset) {
+#else
     if (!d->currentRow || key < d->valueOffset) {
+#endif
         return QVariant();
     } else if (key < d->compositeOffset) {  // Value column.
         return *(d->currentRow + key);
@@ -610,8 +649,11 @@ void QGalleryTrackerResultSet::cancel()
 bool QGalleryTrackerResultSet::waitForFinished(int msecs)
 {
     Q_D(QGalleryTrackerResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QTimer timer;
+#else
     QTime timer;
+#endif
     timer.start();
 
     do {
@@ -631,8 +673,11 @@ bool QGalleryTrackerResultSet::waitForFinished(int msecs)
         } else {
             return true;
         }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    } while ((msecs -= timer.remainingTime()) > 0);
+#else
     } while ((msecs -= timer.restart()) > 0);
-
+#endif
     return false;
 }
 

@@ -145,6 +145,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QHash<int, QByteArray> roleNames() const {return m_roleNames;}
 
     int count() const { return m_rowCount; }
 
@@ -207,6 +208,9 @@ private Q_SLOTS:
     void _q_itemsRemoved(int index, int count);
     void _q_itemsMoved(int from, int to, int count);
     void _q_itemsChanged(int index, int count);
+
+private:
+    QHash<int,QByteArray> m_roleNames;
 };
 
 class QDeclarativeDocumentGalleryModel : public QDeclarativeGalleryQueryModel

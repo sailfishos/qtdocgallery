@@ -86,8 +86,11 @@ QGalleryTrackerEditableResultSet::~QGalleryTrackerEditableResultSet()
 bool QGalleryTrackerEditableResultSet::setMetaData(int key, const QVariant &value)
 {
     Q_D(QGalleryTrackerEditableResultSet);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (d->currentRow->isNull() || key < d->valueOffset || key >= d->columnCount)
+#else
     if (!d->currentRow || key < d->valueOffset || key >= d->columnCount)
+#endif
         return false;
     else if (key >= d->aliasOffset)
         key = d->aliasColumns.at(key - d->aliasOffset) + d->valueOffset;
