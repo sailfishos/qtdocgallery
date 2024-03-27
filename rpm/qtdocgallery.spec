@@ -33,7 +33,7 @@ applications using qtdocgallery
 touch .git
 %qmake5  \
     tracker_enabled=yes \
-    MODULE_VERSION=5.0.0
+    MODULE_VERSION=$(echo %{version} | cut -d '+' -f 1) 
 %make_build
 
 %install
@@ -55,7 +55,6 @@ touch .git
 %{_libdir}/libQt5DocGallery.so
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libQt5DocGallery.prl
-%{_libdir}/libQt5DocGallery.la
 %{_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfig.cmake
 %{_libdir}/cmake/Qt5DocGallery/Qt5DocGalleryConfigVersion.cmake
 %{_datadir}/qt5/mkspecs/modules/qt_lib_docgallery.pri
