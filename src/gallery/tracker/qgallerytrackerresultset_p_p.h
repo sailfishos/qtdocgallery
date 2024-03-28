@@ -181,7 +181,7 @@ public:
 
         int operator -(const row_iterator &other) const { return (begin - other.begin) / width; }
         int operator -(const QVector<QVariant>::const_iterator &iterator) const {
-            return (begin - iterator) / width; }
+            return (begin->toInt() - iterator->toInt()) / width; }
 
         row_iterator operator +(int span) const {
             return row_iterator(begin + (span * width), width); }
@@ -276,7 +276,7 @@ public:
         , compositeOffset(arguments->compositeOffset)
         , aliasOffset(compositeOffset + arguments->compositeColumns.count())
         , columnCount(aliasOffset + arguments->aliasColumns.count())
-        , currentRow(0)
+        , currentRow()
         , currentIndex(-1)
         , rowCount(0)
         , progressMaximum(0)

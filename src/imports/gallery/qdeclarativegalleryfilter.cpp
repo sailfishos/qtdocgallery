@@ -154,7 +154,7 @@ QGalleryFilter QDeclarativeGalleryStringFilter::filter() const
 
 QGalleryFilter QDeclarativeGalleryEqualsFilter::filter() const
 {
-    if (m_filter.value().type() == QVariant::RegExp) {
+    if (m_filter.value().type() == QVariant::RegularExpression) {
         QGalleryMetaDataFilter filter(m_filter);
 
         filter.setComparator(QGalleryFilter::RegExp);
@@ -506,15 +506,22 @@ void QDeclarativeGalleryFilterGroup::append(
         Q_EMIT filterGroup->filterChanged();
     }
 }
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+qsizetype QDeclarativeGalleryFilterGroup::count(
+#else
 int QDeclarativeGalleryFilterGroup::count(
+#endif
         QQmlListProperty<QDeclarativeGalleryFilterBase> *filters)
 {
     return static_cast<QList<QDeclarativeGalleryFilterBase *>*>(filters->data)->count();
 }
 
 QDeclarativeGalleryFilterBase *QDeclarativeGalleryFilterGroup::at(
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QQmlListProperty<QDeclarativeGalleryFilterBase> *filters, qsizetype index)
+#else
         QQmlListProperty<QDeclarativeGalleryFilterBase> *filters, int index)
+#endif
 {
     return static_cast<QList<QDeclarativeGalleryFilterBase *>*>(filters->data)->at(index);
 }

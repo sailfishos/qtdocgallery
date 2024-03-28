@@ -155,7 +155,7 @@ Q_SIGNALS:
     void currentItemChanged();
 
 protected:
-    void setResponse(QGalleryAbstractResponse *response);
+    void setResponse(QGalleryAbstractResponse *response) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryQueryRequest)

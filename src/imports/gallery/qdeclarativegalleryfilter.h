@@ -279,9 +279,17 @@ private:
     static void append(
             QQmlListProperty<QDeclarativeGalleryFilterBase> *filters,
             QDeclarativeGalleryFilterBase *filter);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    static qsizetype count(QQmlListProperty<QDeclarativeGalleryFilterBase> *filters);
+#else
     static int count(QQmlListProperty<QDeclarativeGalleryFilterBase> *filters);
+#endif
     static QDeclarativeGalleryFilterBase *at(
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QQmlListProperty<QDeclarativeGalleryFilterBase> *filters, qsizetype index);
+#else
             QQmlListProperty<QDeclarativeGalleryFilterBase> *filters, int index);
+#endif
     static void clear(QQmlListProperty<QDeclarativeGalleryFilterBase> *filters);
 };
 
