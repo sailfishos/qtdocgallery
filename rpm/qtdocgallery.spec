@@ -12,8 +12,8 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Test)
 BuildRequires:  pkgconfig(tracker-sparql-3.0)
-# This seems like a good place to pull in the tracker daemons
-Requires:       tracker-miners
+# This seems like a good place to pull in the localsearch (ex tracker) daemons
+Requires:       localsearch
 
 %description
 Qt document gallery optional module
@@ -44,13 +44,11 @@ touch .git
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %license LICENSE.LGPLv21 LGPL_EXCEPTION.txt LICENSE.GPLv3
 %{_libdir}/libQt5DocGallery.so.*
 %{_libdir}/qt5/qml/QtDocGallery/*
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/qt5/QtDocGallery/*
 %{_libdir}/libQt5DocGallery.so
 %{_libdir}/pkgconfig/*.pc
