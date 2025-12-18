@@ -262,7 +262,7 @@ QModelIndex QDeclarativeGalleryQueryModel::index(int row, int column, const QMod
 
 QJSValue QDeclarativeGalleryQueryModel::get(const QJSValue &index) const
 {
-    QJSEngine *scriptEngine = index.engine();
+    QJSEngine *scriptEngine = qjsEngine(this);
 
     if (!scriptEngine)
        return QJSValue();
@@ -430,7 +430,7 @@ void QDeclarativeGalleryQueryModel::_q_setResultSet(QGalleryResultSet *resultSet
     }
 
     if (m_resultSet) {
-        QHash<int, QByteArray> roleNames;
+        m_roleNames.clear();
         m_propertyNames.clear();
 
         QStringList propertyNames = m_request.propertyNames();
@@ -442,14 +442,12 @@ void QDeclarativeGalleryQueryModel::_q_setResultSet(QGalleryResultSet *resultSet
             const int key = m_resultSet->propertyKey(*it);
 
             if (key >= 0) {
-                roleNames.insert(key + MetaDataOffset, it->toLatin1());
+                m_roleNames.insert(key + MetaDataOffset, it->toLatin1());
                 m_propertyNames.append(qMakePair(key, *it));
             }
         }
-        roleNames.insert(ItemId, QByteArray("itemId"));
-        roleNames.insert(ItemType, QByteArray("itemType"));
-
-        setRoleNames(roleNames);
+        m_roleNames.insert(ItemId, QByteArray("itemId"));
+        m_roleNames.insert(ItemType, QByteArray("itemType"));
 
         connect(m_resultSet, SIGNAL(itemsInserted(int,int)),
                 this, SLOT(_q_itemsInserted(int,int)));

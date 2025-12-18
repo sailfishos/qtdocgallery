@@ -45,7 +45,7 @@
 
 #include "qgallerytrackermetadataedit_p.h"
 
-#include <QtCore/qdatetime.h>
+#include <QElapsedTimer>
 #include <QtDBus/qdbusreply.h>
 
 #include <qdocumentgallery.h>
@@ -371,7 +371,7 @@ void QGalleryTrackerResultSetPrivate::syncFinish(const int rIndex, const int iIn
 
 bool QGalleryTrackerResultSetPrivate::waitForSyncFinish(int msecs)
 {
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
 
     do {
@@ -611,7 +611,7 @@ bool QGalleryTrackerResultSet::waitForFinished(int msecs)
 {
     Q_D(QGalleryTrackerResultSet);
 
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
 
     do {
