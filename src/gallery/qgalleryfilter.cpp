@@ -79,10 +79,10 @@ class QGalleryInvalidFilterPrivate : public QGalleryFilterPrivate
 public:
     QGalleryInvalidFilterPrivate() : QGalleryFilterPrivate(QGalleryFilter::Invalid) {}
 
-    bool isEqual(const QGalleryFilterPrivate &other) const { return type == other.type; }
+    bool isEqual(const QGalleryFilterPrivate &other) const override { return type == other.type; }
 
 #ifndef QT_NO_DEBUG_STREAM
-    void printDebug(QDebug &debug) const { debug << "QGalleryFilter()"; }
+    void printDebug(QDebug &debug) const override { debug << "QGalleryFilter()"; }
 #endif
 };
 
@@ -100,14 +100,14 @@ public:
     {
     }
 
-    bool isEqual(const QGalleryFilterPrivate &other) const
+    bool isEqual(const QGalleryFilterPrivate &other) const override
     {
         return other.type == type && static_cast<const QGalleryIntersectionFilterPrivate &>
                 (other).filters == filters;
     }
 
 #ifndef QT_NO_DEBUG_STREAM
-    void printDebug(QDebug &debug) const
+    void printDebug(QDebug &debug) const override
     {
         debug << "QGalleryIntersectionFilter(";
         QList<QGalleryFilter>::const_iterator filter = filters.begin();
@@ -136,14 +136,14 @@ public:
     {
     }
 
-    bool isEqual(const QGalleryFilterPrivate &other) const
+    bool isEqual(const QGalleryFilterPrivate &other) const override
     {
         return other.type == type && static_cast<const QGalleryUnionFilterPrivate &>
                 (other).filters == filters;
     }
 
 #ifndef QT_NO_DEBUG_STREAM
-    void printDebug(QDebug &debug) const
+    void printDebug(QDebug &debug) const override
     {
         debug << "QGalleryUnionFilter(";
         QList<QGalleryFilter>::const_iterator filter = filters.begin();
@@ -178,7 +178,7 @@ public:
     {
     }
 
-    bool isEqual(const QGalleryFilterPrivate &other) const
+    bool isEqual(const QGalleryFilterPrivate &other) const override
     {
         if (other.type == type) {
             const QGalleryMetaDataFilterPrivate &o
@@ -194,7 +194,7 @@ public:
     }
 
 #ifndef QT_NO_DEBUG_STREAM
-    void printDebug(QDebug &debug) const
+    void printDebug(QDebug &debug) const override
     {
         if (negated)
             debug << "!";

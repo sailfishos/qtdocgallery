@@ -97,7 +97,7 @@ Q_SIGNALS:
     void typeChanged();
 
 protected:
-    void setResponse(QGalleryAbstractResponse *response);
+    void setResponse(QGalleryAbstractResponse *response) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryTypeRequest)

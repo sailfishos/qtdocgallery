@@ -58,7 +58,7 @@ class QGalleryDeclarativeModule : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface" FILE "gallery.json")
 
 public:
-    virtual void registerTypes(const char *uri)
+    virtual void registerTypes(const char *uri) override
     {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtDocGallery"));
 

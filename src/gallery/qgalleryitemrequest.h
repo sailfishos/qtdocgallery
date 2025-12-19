@@ -108,7 +108,7 @@ Q_SIGNALS:
     void metaDataChanged(const QList<int> &keys);
 
 protected:
-    void setResponse(QGalleryAbstractResponse *response);
+    void setResponse(QGalleryAbstractResponse *response) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryItemRequest)

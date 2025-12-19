@@ -104,7 +104,7 @@ public:
 
     QObject *metaData() const { return m_metaData; }
 
-    void componentComplete();
+    void componentComplete() override;
 
 public Q_SLOTS:
     void reload();
@@ -134,7 +134,7 @@ protected:
 
     void deferredExecute();
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
     QGalleryTypeRequest m_request;
     QQmlPropertyMap *m_metaData;
@@ -156,7 +156,7 @@ public:
     explicit QDeclarativeDocumentGalleryType(QObject *parent = Q_NULLPTR);
     ~QDeclarativeDocumentGalleryType();
 
-    void classBegin();
+    void classBegin() override;
 
     QDeclarativeDocumentGallery::ItemType itemType() const;
     void setItemType(QDeclarativeDocumentGallery::ItemType itemType);

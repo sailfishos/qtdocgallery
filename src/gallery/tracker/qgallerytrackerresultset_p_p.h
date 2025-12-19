@@ -76,7 +76,7 @@ class QGalleryTrackerResultSetThread : public QThread
 public:
     QGalleryTrackerResultSetThread(QRunnable *runnable) : runnable(runnable) {}
 
-    void run() { runnable->run(); }
+    void run() override{ runnable->run(); }
 
 private:
     QRunnable *runnable;
@@ -358,7 +358,7 @@ public:
 
     void query();
 
-    void run();
+    void run() override;
 
     void synchronize();
 

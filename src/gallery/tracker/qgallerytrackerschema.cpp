@@ -1101,7 +1101,7 @@ class QGalleryTrackerServicePrefixColumn : public QGalleryTrackerCompositeColumn
 public:
     QGalleryTrackerServicePrefixColumn() {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 };
 
 class QGalleryTrackerServiceTypeColumn : public QGalleryTrackerCompositeColumn
@@ -1109,7 +1109,7 @@ class QGalleryTrackerServiceTypeColumn : public QGalleryTrackerCompositeColumn
 public:
     QGalleryTrackerServiceTypeColumn() {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 };
 
 class QGalleryTrackerServiceIndexColumn : public QGalleryTrackerValueColumn
@@ -1117,7 +1117,7 @@ class QGalleryTrackerServiceIndexColumn : public QGalleryTrackerValueColumn
 public:
     QGalleryTrackerServiceIndexColumn() {}
 
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 QVariant QGalleryTrackerServicePrefixColumn::value(QVector<QVariant>::const_iterator row) const

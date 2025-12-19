@@ -7,6 +7,10 @@ QT = \
     qml \
     docgallery
 
+linux-* {
+    QMAKE_CXXFLAGS += -Wsuggest-override
+}
+
 HEADERS += \
     qdeclarativedocumentgallery.h \
     qdeclarativegalleryfilter.h \

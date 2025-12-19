@@ -139,13 +139,13 @@ public:
     int limit() const { return m_request.limit(); }
     void setLimit(int limit);
 
-    int rowCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex &parent) const override;
 
-    QVariant data(const QModelIndex &index, int role) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QHash<int, QByteArray> roleNames() const { return m_roleNames; }
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QHash<int, QByteArray> roleNames() const  override{ return m_roleNames; }
 
     int count() const { return m_rowCount; }
 
@@ -155,7 +155,7 @@ public:
     Q_INVOKABLE void set(int index, const QJSValue &value);
     Q_INVOKABLE void setProperty(int index, const QString &property, const QVariant &value);
 
-    void componentComplete();
+    void componentComplete() override;
 
 public Q_SLOTS:
     void reload();
@@ -191,7 +191,7 @@ protected:
 
     virtual QVariant itemType(const QString &type) const = 0;
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
     QGalleryQueryRequest m_request;
     QPointer<QDeclarativeGalleryFilterBase> m_filter;
@@ -221,7 +221,7 @@ public:
     explicit QDeclarativeDocumentGalleryModel(QObject *parent = Q_NULLPTR);
     ~QDeclarativeDocumentGalleryModel();
 
-    void classBegin();
+    void classBegin() override;
 
     QDeclarativeDocumentGallery::ItemType rootType() const;
     void setRootType(QDeclarativeDocumentGallery::ItemType itemType);
@@ -230,7 +230,7 @@ Q_SIGNALS:
     void rootTypeChanged();
 
 protected:
-    QVariant itemType(const QString &type) const;
+    QVariant itemType(const QString &type) const override;
 };
 
 QT_END_NAMESPACE_DOCGALLERY

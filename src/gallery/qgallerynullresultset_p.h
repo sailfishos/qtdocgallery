@@ -60,23 +60,23 @@ QT_BEGIN_NAMESPACE_DOCGALLERY
 class QGalleryNullResultSet : public QGalleryResultSet
 {
 public:
-    int propertyKey(const QString &) const { return -1; }
-    QGalleryProperty::Attributes propertyAttributes(int) const {
+    int propertyKey(const QString &) const override { return -1; }
+    QGalleryProperty::Attributes propertyAttributes(int) const override {
         return QGalleryProperty::Attributes(); }
-    QVariant::Type propertyType(int) const { return QVariant::Invalid; }
+    QVariant::Type propertyType(int) const override { return QVariant::Invalid; }
 
-    int itemCount() const { return 0; }
+    int itemCount() const override { return 0; }
 
-    QVariant itemId() const { return QVariant(); }
-    QUrl itemUrl() const { return QUrl(); }
-    QString itemType() const { return QString(); }
-    QList<QGalleryResource> resources() const { return QList<QGalleryResource>(); }
+    QVariant itemId() const override { return QVariant(); }
+    QUrl itemUrl() const override { return QUrl(); }
+    QString itemType() const override { return QString(); }
+    QList<QGalleryResource> resources() const override { return QList<QGalleryResource>(); }
 
-    QVariant metaData(int) const { return QVariant(); }
-    bool setMetaData(int, const QVariant &) { return false; }
+    QVariant metaData(int) const override { return QVariant(); }
+    bool setMetaData(int, const QVariant &) override { return false; }
 
-    int currentIndex() const { return -1; }
-    bool fetch(int) { return false; }
+    int currentIndex() const override { return -1; }
+    bool fetch(int) override { return false; }
 };
 
 QT_END_NAMESPACE_DOCGALLERY

@@ -72,7 +72,7 @@ public:
             QObject *parent = Q_NULLPTR);
     ~QGalleryTrackerEditableResultSet();
 
-    bool setMetaData(int key, const QVariant &value);
+    bool setMetaData(int key, const QVariant &value) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryTrackerEditableResultSet)

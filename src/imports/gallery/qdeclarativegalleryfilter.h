@@ -105,7 +105,7 @@ public:
     bool isNegated() const { return m_filter.isNegated(); }
     void setNegated(bool negated);
 
-    QGalleryFilter filter() const;
+    QGalleryFilter filter() const override;
 
 Q_SIGNALS:
     void propertyNameChanged();
@@ -139,7 +139,7 @@ public:
     bool isNegated() const { return m_filter.isNegated(); }
     void setNegated(bool negated);
 
-    QGalleryFilter filter() const;
+    QGalleryFilter filter() const override;
 
 Q_SIGNALS:
     void propertyNameChanged();
@@ -166,7 +166,7 @@ public:
     {
     }
 
-    QGalleryFilter filter() const;
+    QGalleryFilter filter() const override;
 };
 
 class QDeclarativeGalleryLessThanFilter : public QDeclarativeGalleryValueFilter
@@ -265,8 +265,8 @@ public:
     {
     }
 
-    void classBegin();
-    void componentComplete();
+    void classBegin() override;
+    void componentComplete() override;
 
     QQmlListProperty<QDeclarativeGalleryFilterBase> filters();
 
@@ -302,7 +302,7 @@ public:
     {
     }
 
-    QGalleryFilter filter() const;
+    QGalleryFilter filter() const override;
 };
 
 class QDeclarativeGalleryFilterIntersection : public QDeclarativeGalleryFilterGroup
@@ -314,7 +314,7 @@ public:
     {
     }
 
-    QGalleryFilter filter() const;
+    QGalleryFilter filter() const override;
 };
 
 QT_END_NAMESPACE_DOCGALLERY
