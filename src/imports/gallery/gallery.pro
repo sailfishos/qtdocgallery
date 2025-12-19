@@ -22,6 +22,4 @@ SOURCES += \
     qdeclarativegalleryquerymodel.cpp \
     qdeclarativegallerytype.cpp
 
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
-
 load(qml_plugin)
