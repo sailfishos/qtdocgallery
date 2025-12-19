@@ -47,6 +47,7 @@
 #include "qgallerytrackerresultset_p.h"
 #include "qgallerytrackerlistcolumn_p.h"
 
+#include <QRegularExpression>
 #include <QtCore/qdatetime.h>
 #include <QtCore/qdir.h>
 #include <QtCore/qmetatype.h>
@@ -464,7 +465,7 @@ static bool qt_write_function(
         QDocumentGallery::Error *,
         const char *function,
         const QString &field,
-        const QRegExp &regExp,
+        const QRegularExpression &regExp,
         QString *query)
 {
     *query += QLatin1String(function)
@@ -530,9 +531,9 @@ static bool qt_writeCondition(
 
         switch (filter.comparator()) {
         case QGalleryFilter::Equals:
-            return value.type() != QVariant::RegExp
+            return value.type() != QVariant::RegularExpression
                     ? qt_write_comparison(error, property.field, value, "=", query, property.type)
-                    : qt_write_function(error, "REGEX", properties[index].field, value.toRegExp(), query);
+                    : qt_write_function(error, "REGEX", properties[index].field, value.toRegularExpression(), query);
         case QGalleryFilter::LessThan:
             return qt_write_comparison(error, property.field, value, "<", query, property.type);
         case QGalleryFilter::GreaterThan:
@@ -550,9 +551,9 @@ static bool qt_writeCondition(
         case QGalleryFilter::Wildcard:
             return qt_write_function(error, "fn:contains", property.field, value, query, property.type);
         case QGalleryFilter::RegExp:
-            return value.type() != QVariant::RegExp
+            return value.type() != QVariant::RegularExpression
                     ? qt_write_function(error, "REGEX", property.field, value, query, property.type)
-                    : qt_write_function(error, "REGEX", property.field, value.toRegExp(), query);
+                    : qt_write_function(error, "REGEX", property.field, value.toRegularExpression(), query);
         default:
             *error = QDocumentGallery::FilterError;
 
@@ -1340,31 +1341,31 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
     if (!rootItemId.isEmpty()) {
         const int index = itemTypes.indexOfItemId(rootItemId);
         if (index != -1) {
-            if (itemTypes[index].itemType == QDocumentGallery::Artist) {
-                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album) {
+            if (itemTypes[index].itemType == QDocumentGallery::Artist.name()) {
+                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
                     *join   = QLatin1String(" . ?track nmm:artist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
-                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio) {
+                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
                     *join   = QLatin1String(" . ?x nmm:artist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
-            } else if (itemTypes[index].itemType == QDocumentGallery::AlbumArtist) {
-                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio) {
+            } else if (itemTypes[index].itemType == QDocumentGallery::AlbumArtist.name()) {
+                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
                     *join   = QLatin1String(" . ?album a nmm:MusicAlbum . ?x nmm:musicAlbum ?album . ?album nmm:albumArtist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
-                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album) {
+                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
                     *join   = QLatin1String(" . ?x nmm:albumArtist <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
-            } else if (itemTypes[index].itemType == QDocumentGallery::Folder) {
+            } else if (itemTypes[index].itemType == QDocumentGallery::Folder.name()) {
                 const QString rootUrn = itemTypes[index].prefix.strip(rootItemId).toString();
                 if (qt_galleryItemTypeList[m_itemIndex].updateMask & FileMask) {
                     if (scope == QGalleryQueryRequest::DirectDescendants) {
@@ -1380,20 +1381,20 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
-            } else if (itemTypes[index].itemType == QDocumentGallery::Album) {
-                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio) {
+            } else if (itemTypes[index].itemType == QDocumentGallery::Album.name()) {
+                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
                     *join   = QLatin1String(" . ?x nmm:musicAlbum <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
-            } else if (itemTypes[index].itemType == QDocumentGallery::PhotoAlbum
-                       || itemTypes[index].itemType == QDocumentGallery::Playlist) {
-                if ((qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Image
-                        && itemTypes[index].itemType == QDocumentGallery::PhotoAlbum)
-                        || (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio
-                        && itemTypes[index].itemType == QDocumentGallery::Playlist)) {
+            } else if (itemTypes[index].itemType == QDocumentGallery::PhotoAlbum.name()
+                       || itemTypes[index].itemType == QDocumentGallery::Playlist.name()) {
+                if ((qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Image.name()
+                        && itemTypes[index].itemType == QDocumentGallery::PhotoAlbum.name())
+                        || (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()
+                        && itemTypes[index].itemType == QDocumentGallery::Playlist.name())) {
                     *join   = QLatin1String(" . <")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("> nfo:hasMediaFileListEntry ?entry"
@@ -1402,20 +1403,20 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
-            } else if (itemTypes[index].itemType == QDocumentGallery::AudioGenre) {
-                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio) {
+            } else if (itemTypes[index].itemType == QDocumentGallery::AudioGenre.name()) {
+                if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
                     *join   = QLatin1String(" . ?x nfo:genre '")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("'");
-                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album) {
+                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
                     *join   = QLatin1String(" . ?track nfo:genre '")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("'");
-                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Artist) {
+                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Artist.name()) {
                     *join   = QLatin1String(" . ?track nfo:genre '")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("'");
-                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::AlbumArtist) {
+                } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::AlbumArtist.name()) {
                     *join   = QLatin1String(" . ?track nfo:genre '")
                             + itemTypes[index].prefix.strip(rootItemId).toString()
                             + QLatin1String("'");
