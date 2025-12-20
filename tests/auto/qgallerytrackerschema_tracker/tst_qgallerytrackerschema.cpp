@@ -52,7 +52,6 @@
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QDocumentGallery::Error))
 Q_DECLARE_METATYPE(QVariant)
 Q_DECLARE_METATYPE(QVector<QVariant>)
-Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryDBusInterfacePointer))
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryQueryRequest::Scope))
 Q_DECLARE_METATYPE(QVector<QVariant::Type>)
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryProperty::Attributes))
@@ -121,7 +120,6 @@ void tst_QGalleryTrackerSchema::initTestCase()
     qRegisterMetaType<QDocumentGallery::Error>();
     qRegisterMetaType<QVariant>();
     qRegisterMetaType<QVector<QVariant> >();
-    qRegisterMetaType<QGalleryDBusInterfacePointer>();
     qRegisterMetaType<QGalleryQueryRequest::Scope>();
     qRegisterMetaType<QVector<QVariant::Type> >();
     qRegisterMetaType<QGalleryProperty::Attributes>();
@@ -2110,9 +2108,9 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                     "GROUP BY ?x";
     } {
         QGalleryFilter filter
-                = QDocumentGallery::fileName.regExp(QRegExp(QLatin1String("(file|document).ext")));
+                = QDocumentGallery::fileName.regExp(QRegularExpression(QLatin1String("(file|document).ext")));
 
-        QTest::newRow("File.fileName.regExp(QRegExp((file|document).ext))")
+        QTest::newRow("File.fileName.regExp(QRegularExpression((file|document).ext))")
                 << "File"
                 << QString()
                 << QGalleryQueryRequest::AllDescendants

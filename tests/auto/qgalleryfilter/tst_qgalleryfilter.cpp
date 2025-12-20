@@ -785,9 +785,9 @@ void tst_QGalleryFilter::propertyOperators_data()
             << QGalleryFilter::RegExp;
 
     QTest::newRow("albumTitle.regExp(QRegExp((Self Titled|Greatest Hits)))")
-            << albumTitle.regExp(QRegExp(QLatin1String("(Self Titled|Greatest Hits)")))
+            << albumTitle.regExp(QRegularExpression(QLatin1String("(Self Titled|Greatest Hits)")))
             << "albumTitle"
-            << QVariant(QRegExp(QLatin1String("(Self Titled|Greatest Hits)")))
+            << QVariant(QRegularExpression(QLatin1String("(Self Titled|Greatest Hits)")))
             << QGalleryFilter::RegExp;
 }
 
