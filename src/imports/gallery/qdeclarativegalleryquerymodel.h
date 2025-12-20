@@ -187,7 +187,7 @@ protected:
         CanceledUpdate
     };
 
-    explicit QDeclarativeGalleryQueryModel(QObject *parent = Q_NULLPTR);
+    explicit QDeclarativeGalleryQueryModel(QObject *parent = nullptr);
 
     virtual QVariant itemType(const QString &type) const = 0;
 
@@ -218,7 +218,7 @@ class QDeclarativeDocumentGalleryModel : public QDeclarativeGalleryQueryModel
     Q_OBJECT
     Q_PROPERTY(QDocGallery::QDeclarativeDocumentGallery::ItemType rootType READ rootType WRITE setRootType NOTIFY rootTypeChanged)
 public:
-    explicit QDeclarativeDocumentGalleryModel(QObject *parent = Q_NULLPTR);
+    explicit QDeclarativeDocumentGalleryModel(QObject *parent = nullptr);
     ~QDeclarativeDocumentGalleryModel();
 
     void classBegin() override;

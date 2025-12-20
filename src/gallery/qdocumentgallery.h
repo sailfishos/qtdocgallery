@@ -163,7 +163,7 @@ public:
         FilterError
     };
 
-    QDocumentGallery(QObject *parent = Q_NULLPTR);
+    QDocumentGallery(QObject *parent = nullptr);
     ~QDocumentGallery();
 
     bool isRequestSupported(QGalleryAbstractRequest::RequestType type) const override;

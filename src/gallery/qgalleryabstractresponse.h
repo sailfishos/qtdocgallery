@@ -56,7 +56,7 @@ class Q_GALLERY_EXPORT QGalleryAbstractResponse : public QObject
     Q_DECLARE_PRIVATE(QGalleryAbstractResponse)
 public:
     QGalleryAbstractResponse(
-            int error, const QString &errorString = QString(), QObject *parent = Q_NULLPTR);
+            int error, const QString &errorString = QString(), QObject *parent = nullptr);
     ~QGalleryAbstractResponse();
 
     int error() const;
@@ -76,7 +76,7 @@ Q_SIGNALS:
     void progressChanged(int current, int maximum);
 
 protected:
-    QGalleryAbstractResponse(QObject *parent = Q_NULLPTR);
+    QGalleryAbstractResponse(QObject *parent = nullptr);
     QGalleryAbstractResponse(QGalleryAbstractResponsePrivate &dd, QObject *parent);
 
     void finish(bool idle = false);

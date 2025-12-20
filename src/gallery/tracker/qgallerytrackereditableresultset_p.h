@@ -69,7 +69,7 @@ public:
             TrackerSparqlConnection *connection,
             QGalleryTrackerResultSetArguments *arguments,
             bool autoUpdate,
-            QObject *parent = Q_NULLPTR);
+            QObject *parent = nullptr);
     ~QGalleryTrackerEditableResultSet();
 
     bool setMetaData(int key, const QVariant &value) override;

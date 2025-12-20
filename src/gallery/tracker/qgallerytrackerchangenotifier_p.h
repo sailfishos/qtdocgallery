@@ -67,7 +67,7 @@ class QGalleryTrackerChangeNotifier : public QObject
 public:
     QGalleryTrackerChangeNotifier(
             TrackerSparqlConnection *connection,
-            QObject *parent = Q_NULLPTR);
+            QObject *parent = nullptr);
     ~QGalleryTrackerChangeNotifier();
 
     void handleGraphUpdate(const QString &graph);
