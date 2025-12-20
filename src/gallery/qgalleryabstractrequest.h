@@ -50,6 +50,11 @@
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 class QAbstractGallery;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_MOC_INCLUDE("qabstractgallery.h");
+#endif
+
 class QGalleryAbstractResponse;
 class QGalleryAbstractRequestPrivate;
 
