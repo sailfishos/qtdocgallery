@@ -1,6 +1,6 @@
 Name:       qt5-qtdocgallery
 Summary:    Qt document gallery optional module
-Version:    5.2.0
+Version:    5.3.0
 Release:    1
 License:    LGPLv2 or GPLv3 or Qt Commercial
 URL:        https://github.com/sailfishos/qtdocgallery
@@ -30,9 +30,12 @@ applications using qtdocgallery
 %setup -q -n %{name}-%{version}
 
 %build
+# building tests even if not packaged just to ensure they build.
+# this is de facto upstream
 touch .git
 %qmake5  \
     tracker_enabled=yes \
+    QT_BUILD_PARTS+=tests \
     MODULE_VERSION=$(echo %{version} | cut -d '+' -f 1) 
 %make_build
 
