@@ -57,6 +57,8 @@
 
 #include "qgallerytrackerlistcolumn_p.h"
 
+#include <memory>
+
 class QDBusPendingCallWatcher;
 
 typedef struct _TrackerSparqlConnection TrackerSparqlConnection;
@@ -71,10 +73,7 @@ class QGalleryTrackerResultSetPrivate;
 struct QGalleryTrackerResultSetArguments
 {
     QGalleryTrackerResultSetArguments()
-        : idColumn(0)
-        , urlColumn(0)
-        , typeColumn(0)
-        , updateMask(0)
+        : updateMask(0)
         , identityWidth(0)
         , tableWidth(0)
         , valueOffset(0)
@@ -94,9 +93,9 @@ struct QGalleryTrackerResultSetArguments
         compositeColumns.clear();
     }
 
-    QScopedPointer<QGalleryTrackerCompositeColumn> idColumn;
-    QScopedPointer<QGalleryTrackerCompositeColumn> urlColumn;
-    QScopedPointer<QGalleryTrackerCompositeColumn> typeColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> idColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> urlColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> typeColumn;
     int updateMask;
     int identityWidth;
     int tableWidth;

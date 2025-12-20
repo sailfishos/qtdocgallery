@@ -1999,11 +1999,10 @@ void tst_QDeclarativeDocumentGalleryModel::groupFilter()
         QDeclarativeComponent filterComponent(&engine);
         filterComponent.setData(filterQml, QUrl());
 
-        QScopedPointer<QObject> filterObject(filterComponent.create());
+        QObject *filterObject(filterComponent.create());
         QVERIFY(filterObject);
 
-        filterList.append(
-                &filterList, static_cast<QDeclarativeGalleryFilterBase *>(filterObject.take()));
+        filterList.append(&filterList, static_cast<QDeclarativeGalleryFilterBase *>(filterObject));
     }
     QCOMPARE(filterList.count(&filterList), 1);
     QVERIFY(filterList.at(&filterList, 0));
@@ -2031,11 +2030,10 @@ void tst_QDeclarativeDocumentGalleryModel::groupFilter()
         QDeclarativeComponent filterComponent(&engine);
         filterComponent.setData(filterQml, QUrl());
 
-        QScopedPointer<QObject> filterObject(filterComponent.create());
+        QObject *filterObject(filterComponent.create());
         QVERIFY(filterObject);
 
-        filterList.append(
-                &filterList, static_cast<QDeclarativeGalleryFilterBase *>(filterObject.take()));
+        filterList.append(&filterList, static_cast<QDeclarativeGalleryFilterBase *>(filterObject));
     }
     QCOMPARE(filterList.count(&filterList), 2);
     QVERIFY(filterList.at(&filterList, 1));
