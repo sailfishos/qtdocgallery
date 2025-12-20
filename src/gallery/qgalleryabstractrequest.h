@@ -47,7 +47,6 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_HEADER
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 class QAbstractGallery;
@@ -144,6 +143,5 @@ private:
 };
 
 QT_END_NAMESPACE_DOCGALLERY
-QT_END_HEADER
 
 #endif
