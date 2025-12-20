@@ -1,6 +1,6 @@
 include(../auto.pri)
 
-QT += declarative
+QT += qml
 
 INCLUDEPATH += ../../../src/imports/gallery/
 

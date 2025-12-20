@@ -45,14 +45,16 @@
 #include <qgalleryresultset.h>
 #include <qgallerytyperequest.h>
 
-#include <QtDeclarative/qdeclarativecomponent.h>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeengine.h>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQmlEngine>
 
 #include <qdeclarativedocumentgallery.h>
 #include <qdeclarativegallerytype.h>
 
 #include <QtTest/QtTest>
+
+QT_USE_DOCGALLERY_NAMESPACE
 
 class QtGalleryTestResponse : public QGalleryResultSet
 {
@@ -246,7 +248,7 @@ private Q_SLOTS:
 
 private:
     QtTestGallery gallery;
-    QDeclarativeEngine engine;
+    QQmlEngine engine;
 };
 
 void tst_QDeclarativeDocumentGalleryType::initTestCase()
@@ -328,7 +330,7 @@ void tst_QDeclarativeDocumentGalleryType::itemType()
     QFETCH(int, expectedItemType);
     QFETCH(QString, itemTypeString);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -399,7 +401,7 @@ void tst_QDeclarativeDocumentGalleryType::properties()
     QFETCH(QStringList, qmlPropertyNames);
     QFETCH(QStringList, propertyNames);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -483,7 +485,7 @@ void tst_QDeclarativeDocumentGalleryType::autoUpdate()
     QFETCH(bool, qmlAutoUpdate);
     QFETCH(bool, autoUpdate);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -515,7 +517,7 @@ void tst_QDeclarativeDocumentGalleryType::disableAutoUpdateFinished()
 
     gallery.setState(QGalleryAbstractRequest::Finished);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -543,7 +545,7 @@ void tst_QDeclarativeDocumentGalleryType::disableAutoUpdateIdle()
 
     gallery.setState(QGalleryAbstractRequest::Idle);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -571,7 +573,7 @@ void tst_QDeclarativeDocumentGalleryType::disableAutoUpdateActive()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -602,7 +604,7 @@ void tst_QDeclarativeDocumentGalleryType::asyncResponse()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -627,7 +629,7 @@ void tst_QDeclarativeDocumentGalleryType::cancelAsyncResponse()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -652,7 +654,7 @@ void tst_QDeclarativeDocumentGalleryType::cancelIdleResponse()
 
     gallery.setState(QGalleryAbstractRequest::Idle);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -675,7 +677,7 @@ void tst_QDeclarativeDocumentGalleryType::cancelPendingResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryType { itemType: DocumentGallery.File }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -704,7 +706,7 @@ void tst_QDeclarativeDocumentGalleryType::deferExecuteCanceledResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryType { itemType: DocumentGallery.File }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -738,7 +740,7 @@ void tst_QDeclarativeDocumentGalleryType::clear()
 
     gallery.setCount(1);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -764,7 +766,7 @@ void tst_QDeclarativeDocumentGalleryType::clearPendingResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryType { itemType: DocumentGallery.File }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -845,7 +847,7 @@ void tst_QDeclarativeDocumentGalleryType::error()
     if (!expectedErrorMessage.isEmpty())
         QTest::ignoreMessage(QtWarningMsg, expectedErrorMessage.constData());
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -891,7 +893,7 @@ void tst_QDeclarativeDocumentGalleryType::progress()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryType { itemType: DocumentGallery.File }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -914,7 +916,7 @@ void tst_QDeclarativeDocumentGalleryType::available()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryType { itemType: DocumentGallery.File }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -950,7 +952,7 @@ void tst_QDeclarativeDocumentGalleryType::metaData()
         gallery.setBlackList(QStringList() << QLatin1String("turtle"));
     }
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());

@@ -46,15 +46,16 @@
 #include <qgalleryitemrequest.h>
 #include <qgalleryresultset.h>
 
-#include <QtDeclarative/qdeclarativecomponent.h>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeengine.h>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQmlEngine>
 
 #include <qdeclarativedocumentgallery.h>
 #include <qdeclarativegalleryitem.h>
 
 #include <QtTest/QtTest>
 
+QT_USE_DOCGALLERY_NAMESPACE
 
 class QtGalleryTestResponse : public QGalleryResultSet
 {
@@ -252,7 +253,7 @@ private Q_SLOTS:
 
 private:
     QtTestGallery gallery;
-    QDeclarativeEngine engine;
+    QQmlEngine engine;
 };
 
 void tst_QDeclarativeDocumentGalleryItem::initTestCase()
@@ -306,7 +307,7 @@ void tst_QDeclarativeDocumentGalleryItem::itemId()
     QFETCH(QVariant, qmlItemId);
     QFETCH(QVariant, itemId);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -377,7 +378,7 @@ void tst_QDeclarativeDocumentGalleryItem::properties()
     QFETCH(QStringList, qmlPropertyNames);
     QFETCH(QStringList, propertyNames);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -461,7 +462,7 @@ void tst_QDeclarativeDocumentGalleryItem::autoUpdate()
     QFETCH(bool, qmlAutoUpdate);
     QFETCH(bool, autoUpdate);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -493,7 +494,7 @@ void tst_QDeclarativeDocumentGalleryItem::disableAutoUpdateFinished()
 
     gallery.setState(QGalleryAbstractRequest::Finished);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -521,7 +522,7 @@ void tst_QDeclarativeDocumentGalleryItem::disableAutoUpdateIdle()
 
     gallery.setState(QGalleryAbstractRequest::Idle);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -549,7 +550,7 @@ void tst_QDeclarativeDocumentGalleryItem::disableAutoUpdateActive()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -579,7 +580,7 @@ void tst_QDeclarativeDocumentGalleryItem::asyncResponse()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -604,7 +605,7 @@ void tst_QDeclarativeDocumentGalleryItem::cancelAsyncResponse()
 
     gallery.setState(QGalleryAbstractRequest::Active);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -629,7 +630,7 @@ void tst_QDeclarativeDocumentGalleryItem::cancelIdleResponse()
 
     gallery.setState(QGalleryAbstractRequest::Idle);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -652,7 +653,7 @@ void tst_QDeclarativeDocumentGalleryItem::cancelPendingResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -681,7 +682,7 @@ void tst_QDeclarativeDocumentGalleryItem::deferExecuteCanceledResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -715,7 +716,7 @@ void tst_QDeclarativeDocumentGalleryItem::clear()
 
     gallery.setCount(1);
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -741,7 +742,7 @@ void tst_QDeclarativeDocumentGalleryItem::clearPendingResponse()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -822,7 +823,7 @@ void tst_QDeclarativeDocumentGalleryItem::error()
     if (!expectedErrorMessage.isEmpty())
         QTest::ignoreMessage(QtWarningMsg, expectedErrorMessage.constData());
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -868,7 +869,7 @@ void tst_QDeclarativeDocumentGalleryItem::progress()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -891,7 +892,7 @@ void tst_QDeclarativeDocumentGalleryItem::available()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -917,7 +918,7 @@ void tst_QDeclarativeDocumentGalleryItem::itemUrl()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -943,7 +944,7 @@ void tst_QDeclarativeDocumentGalleryItem::itemType()
             "import QtMobility.gallery 1.1\n"
             "DocumentGalleryItem { item: 12 }\n");
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
@@ -979,7 +980,7 @@ void tst_QDeclarativeDocumentGalleryItem::metaData()
         gallery.setBlackList(QStringList() << QLatin1String("turtle"));
     }
 
-    QDeclarativeComponent component(&engine);
+    QQmlComponent component(&engine);
     component.setData(qml, QUrl());
 
     QScopedPointer<QObject> object(component.create());
