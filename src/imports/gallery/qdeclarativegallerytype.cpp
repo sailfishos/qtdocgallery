@@ -250,7 +250,7 @@ void QDeclarativeGalleryType::_q_metaDataChanged(const QList<int> &keys)
     \brief The DocumentGalleryType element allows you to request information
     about an item type from the document gallery.
 
-    This element is part of the \b {QtMobility.gallery 1.1} module.
+    This element is part of the \b {QtDocGallery 5.0} module.
 
     \sa DocumentGalleryModel, DocumentGalleryItem
 */

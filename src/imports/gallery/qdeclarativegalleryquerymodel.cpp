@@ -507,7 +507,7 @@ void QDeclarativeGalleryQueryModel::_q_itemsChanged(int index, int count)
 
     \ingroup qml-gallery
 
-    This element is part of the \b {QtMobility.gallery 1.1} module.
+    This element is part of the \b {QtDocGallery 5.0} module.
 
     The properties that should be returned for each item by the query are
     specified in \l properties. In addition all queries return the following
@@ -519,8 +519,8 @@ void QDeclarativeGalleryQueryModel::_q_itemsChanged(int index, int count)
     \endlist
 
     \qml
-    import Qt 4.7
-    import QtMobility.gallery 1.1
+    import QtQuick 2.0
+    import QtDocGallery 5.0
 
     Rectangle {
         width: 1024
