@@ -1729,6 +1729,7 @@ void tst_QGalleryQueryModel::invalidIndex()
     QCOMPARE(model.data(QModelIndex(), Qt::UserRole), QVariant());
     QCOMPARE(model.data(QModelIndex(), Qt::UserRole + 1), QVariant());
 }
+
 void tst_QGalleryQueryModel::hierarchy()
 {
     QtTestGallery gallery;
@@ -1828,7 +1829,6 @@ void tst_QGalleryQueryModel::galleryChanged()
 
 void tst_QGalleryQueryModel::errorChanged()
 {
-
     QtTestGallery gallery;
 
     QGalleryQueryModel model(&gallery);
@@ -1845,10 +1845,7 @@ void tst_QGalleryQueryModel::errorChanged()
     QCOMPARE(model.error(),120);
     QCOMPARE(model.errorString(), QLatin1String("bad connection"));
     QCOMPARE(errorChangedSpy.count(),1);
-
-
 }
-
 
 QTEST_MAIN(tst_QGalleryQueryModel)
 

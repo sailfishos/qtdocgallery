@@ -995,7 +995,7 @@ QGalleryProperty::Attributes QDocumentGallery::propertyAttributes(const QString 
 
 QGalleryAbstractResponse *QDocumentGallery::createResponse(QGalleryAbstractRequest *)
 {
-    return 0;
+    return nullptr;
 }
 
 #endif // QT_DOCUMENT_GALLERY_NULL

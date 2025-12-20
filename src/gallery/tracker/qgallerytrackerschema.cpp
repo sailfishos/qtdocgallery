@@ -150,13 +150,14 @@ namespace
 
     struct QGalleryTypePrefix : public QLatin1String
     {
-        template <int N> QGalleryTypePrefix(const char (&prefix)[N])
-            : QLatin1String(prefix), length(N - 1){}
+        template<int N> QGalleryTypePrefix(const char (&prefix)[N])
+            : QLatin1String(prefix), length(N - 1) {}
 
         const int length;
 
         QStringRef strip(const QString &id) const {
-            return QStringRef(&id, length, id.length() - length); }
+            return QStringRef(&id, length, id.length() - length);
+        }
     };
 
     struct QGalleryItemType
@@ -1343,25 +1344,25 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
         if (index != -1) {
             if (itemTypes[index].itemType == QDocumentGallery::Artist.name()) {
                 if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
-                    *join   = QLatin1String(" . ?track nmm:artist <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String(">");
+                    *join = QLatin1String(" . ?track nmm:artist <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String(">");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
-                    *join   = QLatin1String(" . ?x nmm:artist <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String(">");
+                    *join = QLatin1String(" . ?x nmm:artist <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
             } else if (itemTypes[index].itemType == QDocumentGallery::AlbumArtist.name()) {
                 if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
-                    *join   = QLatin1String(" . ?album a nmm:MusicAlbum . ?x nmm:musicAlbum ?album . ?album nmm:albumArtist <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String(">");
+                    *join = QLatin1String(" . ?album a nmm:MusicAlbum . ?x nmm:musicAlbum ?album . ?album nmm:albumArtist <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String(">");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
-                    *join   = QLatin1String(" . ?x nmm:albumArtist <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String(">");
+                    *join = QLatin1String(" . ?x nmm:albumArtist <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
@@ -1369,9 +1370,9 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                 const QString rootUrn = itemTypes[index].prefix.strip(rootItemId).toString();
                 if (qt_galleryItemTypeList[m_itemIndex].updateMask & FileMask) {
                     if (scope == QGalleryQueryRequest::DirectDescendants) {
-                        *join   = QLatin1String(" . ?x nfo:belongsToContainer <")
-                                + itemTypes[index].prefix.strip(rootItemId).toString()
-                                + QLatin1String(">");
+                        *join = QLatin1String(" . ?x nfo:belongsToContainer <")
+                              + itemTypes[index].prefix.strip(rootItemId).toString()
+                              + QLatin1String(">");
                     } else {
                         filterStatement
                                 = QLatin1String("tracker:uri-is-descendant(nie:isStoredAs(<")
@@ -1383,9 +1384,9 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                 }
             } else if (itemTypes[index].itemType == QDocumentGallery::Album.name()) {
                 if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
-                    *join   = QLatin1String(" . ?x nmm:musicAlbum <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String(">");
+                    *join = QLatin1String(" . ?x nmm:musicAlbum <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String(">");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
@@ -1395,31 +1396,31 @@ QDocumentGallery::Error QGalleryTrackerSchema::buildFilterQuery(
                         && itemTypes[index].itemType == QDocumentGallery::PhotoAlbum.name())
                         || (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()
                         && itemTypes[index].itemType == QDocumentGallery::Playlist.name())) {
-                    *join   = QLatin1String(" . <")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String("> nfo:hasMediaFileListEntry ?entry"
-                                            " . ?entry nfo:entryUrl ?entryUrl"
-                                            " . ?x nie:isStoredAs ?entryUrl");
+                    *join = QLatin1String(" . <")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String("> nfo:hasMediaFileListEntry ?entry"
+                                          " . ?entry nfo:entryUrl ?entryUrl"
+                                          " . ?x nie:isStoredAs ?entryUrl");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }
             } else if (itemTypes[index].itemType == QDocumentGallery::AudioGenre.name()) {
                 if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Audio.name()) {
-                    *join   = QLatin1String(" . ?x nfo:genre '")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String("'");
+                    *join = QLatin1String(" . ?x nfo:genre '")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String("'");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Album.name()) {
-                    *join   = QLatin1String(" . ?track nfo:genre '")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String("'");
+                    *join = QLatin1String(" . ?track nfo:genre '")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String("'");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::Artist.name()) {
-                    *join   = QLatin1String(" . ?track nfo:genre '")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String("'");
+                    *join = QLatin1String(" . ?track nfo:genre '")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String("'");
                 } else if (qt_galleryItemTypeList[m_itemIndex].itemType == QDocumentGallery::AlbumArtist.name()) {
-                    *join   = QLatin1String(" . ?track nfo:genre '")
-                            + itemTypes[index].prefix.strip(rootItemId).toString()
-                            + QLatin1String("'");
+                    *join = QLatin1String(" . ?track nfo:genre '")
+                          + itemTypes[index].prefix.strip(rootItemId).toString()
+                          + QLatin1String("'");
                 } else {
                     result = QDocumentGallery::ItemIdError;
                 }

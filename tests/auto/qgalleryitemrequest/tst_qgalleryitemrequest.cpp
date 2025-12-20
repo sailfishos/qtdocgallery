@@ -550,7 +550,6 @@ void tst_QGalleryItemRequest::multipleResults()
     QCOMPARE(request.isValid(), true);
     QCOMPARE(itemChangedSpy.count(), 3);
     QCOMPARE(metaDataSpy.count(), 2);
-
 }
 
 QTEST_MAIN(tst_QGalleryItemRequest)

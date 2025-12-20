@@ -215,7 +215,6 @@ void tst_QGalleryResource::equality()
     QCOMPARE(resource2 != resource1, !isEqual);
 }
 
-
 void tst_QGalleryResource::copy()
 {
     const int sampleRateKey = 3;
@@ -254,7 +253,6 @@ void tst_QGalleryResource::copy()
     QCOMPARE(resource2.url(), url2);
     QCOMPARE(resource2.attributes(), attributes2);
 }
-
 
 QTEST_MAIN(tst_QGalleryResource)
 

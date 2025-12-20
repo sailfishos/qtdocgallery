@@ -351,8 +351,6 @@ void QDeclarativeGalleryQueryModel::setProperty(
     m_resultSet->setMetaData(m_resultSet->propertyKey(property), value);
 }
 
-
-
 void QDeclarativeGalleryQueryModel::deferredExecute()
 {
     if (m_updateStatus == NoUpdate) {

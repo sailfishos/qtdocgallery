@@ -411,7 +411,7 @@ void QGalleryAbstractRequest::execute()
 
             Q_UNUSED(oldResponse);
 
-            setResponse(0);
+            setResponse(nullptr);
         }
 
         Q_EMIT error(d_ptr->error, d_ptr->errorString);
@@ -430,7 +430,7 @@ void QGalleryAbstractRequest::execute()
                 d_ptr->response.reset();
 
                 if (oldResponse)
-                    setResponse(0);
+                    setResponse(nullptr);
 
                 Q_EMIT error(d_ptr->error, d_ptr->errorString);
                 Q_EMIT errorChanged();
@@ -464,7 +464,7 @@ void QGalleryAbstractRequest::execute()
                     .arg(QString::fromLatin1(d_ptr->gallery.data()->metaObject()->className()));
 
             if (oldResponse)
-                setResponse(0);
+                setResponse(nullptr);
 
             oldResponse.reset();
 
@@ -523,7 +523,7 @@ void QGalleryAbstractRequest::clear()
 
         d_ptr->state = Inactive;
 
-        setResponse(0);
+        setResponse(nullptr);
 
         oldResponse.reset();
 

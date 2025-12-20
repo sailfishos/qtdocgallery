@@ -55,7 +55,6 @@ public:
     {
     }
 
-
     virtual ~QGalleryFilterPrivate() {}
 
     virtual bool isEqual(const QGalleryFilterPrivate &other) const = 0;
@@ -82,7 +81,10 @@ public:
     bool isEqual(const QGalleryFilterPrivate &other) const override { return type == other.type; }
 
 #ifndef QT_NO_DEBUG_STREAM
-    void printDebug(QDebug &debug) const override { debug << "QGalleryFilter()"; }
+    void printDebug(QDebug &debug) const override
+    {
+        debug << "QGalleryFilter()";
+    }
 #endif
 };
 
@@ -480,8 +482,7 @@ void QGalleryIntersectionFilter::clear()
     Appends a \a filter to an intersection.
 */
 
-QGalleryIntersectionFilter &QGalleryIntersectionFilter::operator <<(
-        const QGalleryIntersectionFilter &filter)
+QGalleryIntersectionFilter &QGalleryIntersectionFilter::operator<<(const QGalleryIntersectionFilter &filter)
 {
     d->filters.append(filter.d->filters);
 
@@ -764,7 +765,7 @@ void QGalleryUnionFilter::clear()
     Appends a \a filter to a union.
 */
 
-QGalleryUnionFilter &QGalleryUnionFilter::operator <<(const QGalleryUnionFilter &filter)
+QGalleryUnionFilter &QGalleryUnionFilter::operator<<(const QGalleryUnionFilter &filter)
 {
     d->filters.append(filter.d->filters);
 
@@ -1165,7 +1166,7 @@ QGalleryMetaDataFilter QGalleryFilter::toMetaDataFilter() const
 }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator <<(QDebug debug, const QGalleryFilter &filter)
+QDebug operator<<(QDebug debug, const QGalleryFilter &filter)
 {
     filter.d->printDebug(debug.nospace());
 

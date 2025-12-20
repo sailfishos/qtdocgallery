@@ -61,7 +61,7 @@ class QAbstractGalleryPrivate
 {
 public:
     QAbstractGalleryPrivate()
-        : q_ptr(0)
+        : q_ptr(nullptr)
     {
     }
 

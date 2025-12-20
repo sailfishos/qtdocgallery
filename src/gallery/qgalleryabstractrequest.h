@@ -98,7 +98,7 @@ public:
     };
 
     explicit QGalleryAbstractRequest(RequestType type, QObject *parent = Q_NULLPTR);
-    explicit QGalleryAbstractRequest( QAbstractGallery *gallery, RequestType type, QObject *parent = Q_NULLPTR);
+    explicit QGalleryAbstractRequest(QAbstractGallery *gallery, RequestType type, QObject *parent = Q_NULLPTR);
     ~QGalleryAbstractRequest();
 
     QAbstractGallery *gallery() const;
