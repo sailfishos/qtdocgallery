@@ -1092,7 +1092,7 @@ static const QGalleryItemType qt_galleryItemTypeList[] =
     QT_GALLERY_ITEM_TYPE(Text      , "tracker:Documents",   nfo, PlainTextDocument, text      , Text),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Artist     , "tracker:Audio", nmm, Artist    , " . ?track a nmm:MusicPiece . ?track nmm:artist ?x . ?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", artist     , Artist),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(AlbumArtist, "tracker:Audio", nmm, Artist    , " . ?album a nmm:MusicAlbum . ?album nmm:albumArtist ?x . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?album . ?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", albumArtist, AlbumArtist),
-    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , "tracker:Audio", nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?track . ?x nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", album     , Album),
+    QT_GALLERY_ITEM_TYPE_NO_COMPOSITE_FILTERED(Album      , "tracker:Audio", nmm, MusicAlbum, " . ?track a nmm:MusicPiece . ?track nmm:musicAlbum ?x . ?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . ", album     , Album),
     QT_GALLERY_ITEM_TYPE_NO_COMPOSITE(PhotoAlbum, "tracker:Pictures", nmm, ImageList , photoAlbum, PhotoAlbum),
     QT_GALLERY_AGGREGATE_TYPE_NO_COMPOSITE(AudioGenre, "tracker:Audio", nmm, MusicPiece, nfo:genre(?x), audioGenre, AudioGenre),
 };
