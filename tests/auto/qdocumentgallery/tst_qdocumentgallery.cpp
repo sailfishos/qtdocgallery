@@ -87,23 +87,12 @@ void tst_QDocumentGallery::itemTypeProperties_data()
 
     const QStringList fileProperties = QStringList()
 #if defined(Q_OS_LINUX) && defined(QT_TRACKER_ENABLED)
-            << QDocumentGallery::author
-            << QDocumentGallery::comments
-            << QDocumentGallery::copyright
-            << QDocumentGallery::description
             << QDocumentGallery::fileExtension
             << QDocumentGallery::fileName
             << QDocumentGallery::filePath
             << QDocumentGallery::fileSize
-            << QDocumentGallery::keywords
-            << QDocumentGallery::language
-            << QDocumentGallery::lastAccessed
             << QDocumentGallery::lastModified
             << QDocumentGallery::mimeType
-            << QDocumentGallery::path
-            << QDocumentGallery::rating
-            << QDocumentGallery::subject
-            << QDocumentGallery::title
             << QDocumentGallery::url;
 #endif
             ;
@@ -117,15 +106,24 @@ void tst_QDocumentGallery::itemTypeProperties_data()
             << QDocumentGallery::artist
             << QDocumentGallery::audioBitRate
             << QDocumentGallery::audioCodec
+            << QDocumentGallery::author
             << QDocumentGallery::channelCount
+            << QDocumentGallery::comments
+            << QDocumentGallery::copyright
+            << QDocumentGallery::description
             << QDocumentGallery::discNumber
             << QDocumentGallery::duration
             << QDocumentGallery::genre
+            << QDocumentGallery::keywords
+            << QDocumentGallery::language
             << QDocumentGallery::lastPlayed
             << QDocumentGallery::lyrics
             << QDocumentGallery::playCount
+            << QDocumentGallery::rating
             << QDocumentGallery::sampleRate
+            << QDocumentGallery::subject
             << QDocumentGallery::trackNumber
+            << QDocumentGallery::title
             << QDocumentGallery::performer
             << QDocumentGallery::composer
 #endif
