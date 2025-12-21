@@ -1028,7 +1028,7 @@ void tst_QGalleryFilter::inequality()
 #define TST_QGALLERYMETADATAFILTER_DEBUG_TEXT "QGalleryMetaDataFilter(" \
         "propertyName: \"title\" " \
         "comparator: 6 "  \
-        "value: QVariant(QString, \"Greatest\") ) "
+        "value: QVariant(QString, \"Greatest\"))"
 
 void tst_QGalleryFilter::debugMessage_data()
 {
@@ -1068,7 +1068,7 @@ void tst_QGalleryFilter::debugMessage_data()
             << QGalleryFilter(unionFilter)
             << QByteArray("QGalleryUnionFilter("
                 TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
-                ") ");
+                ")");
 
     QGalleryIntersectionFilter intersectionFilter;
     intersectionFilter.append(metaDataFilter);
@@ -1077,7 +1077,7 @@ void tst_QGalleryFilter::debugMessage_data()
             << QGalleryFilter(intersectionFilter)
             << QByteArray("QGalleryIntersectionFilter("
                 TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
-                ") ");
+                ")");
 
     unionFilter.append(!metaDataFilter);
 
@@ -1087,7 +1087,7 @@ void tst_QGalleryFilter::debugMessage_data()
                 TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
                 " && "
                 "!" TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
-                ") ");
+                ")");
 
     intersectionFilter.append(!metaDataFilter);
 
@@ -1097,7 +1097,7 @@ void tst_QGalleryFilter::debugMessage_data()
                 TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
                 " || "
                 "!" TST_QGALLERYMETADATAFILTER_DEBUG_TEXT
-                ") ");
+                ")");
 }
 
 #undef TST_QGALLERYMETADATAFILTER_DEBUG_TEXT

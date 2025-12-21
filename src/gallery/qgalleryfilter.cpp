@@ -117,7 +117,7 @@ public:
             debug << *filter;
 
             while (++filter != filters.end())
-                debug << " ||" << *filter;
+                debug << " || " << *filter;
         }
         debug << ")";
     }
@@ -153,7 +153,7 @@ public:
             debug << *filter;
 
             while (++filter != filters.end())
-                debug << " &&" << *filter;
+                debug << " && " << *filter;
         }
         debug << ")";
     }
