@@ -1107,8 +1107,8 @@ void tst_QGalleryFilter::debugMessage()
     QFETCH(QGalleryFilter, filter);
     QFETCH(QByteArray, message);
 
-    QTest::ignoreMessage(QtDebugMsg, message.constData());
-    qDebug() << filter;
+    QTest::ignoreMessage(QtWarningMsg, message.constData());
+    qWarning() << filter;
 }
 #endif
 
