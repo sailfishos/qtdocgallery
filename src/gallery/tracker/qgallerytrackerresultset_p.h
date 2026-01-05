@@ -57,6 +57,8 @@
 
 #include "qgallerytrackerlistcolumn_p.h"
 
+#include <memory>
+
 class QDBusPendingCallWatcher;
 
 typedef struct _TrackerSparqlConnection TrackerSparqlConnection;
@@ -71,10 +73,7 @@ class QGalleryTrackerResultSetPrivate;
 struct QGalleryTrackerResultSetArguments
 {
     QGalleryTrackerResultSetArguments()
-        : idColumn(0)
-        , urlColumn(0)
-        , typeColumn(0)
-        , updateMask(0)
+        : updateMask(0)
         , identityWidth(0)
         , tableWidth(0)
         , valueOffset(0)
@@ -94,9 +93,9 @@ struct QGalleryTrackerResultSetArguments
         compositeColumns.clear();
     }
 
-    QScopedPointer<QGalleryTrackerCompositeColumn> idColumn;
-    QScopedPointer<QGalleryTrackerCompositeColumn> urlColumn;
-    QScopedPointer<QGalleryTrackerCompositeColumn> typeColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> idColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> urlColumn;
+    std::unique_ptr<QGalleryTrackerCompositeColumn> typeColumn;
     int updateMask;
     int identityWidth;
     int tableWidth;
@@ -122,32 +121,32 @@ public:
             TrackerSparqlConnection *connection,
             QGalleryTrackerResultSetArguments *arguments,
             bool autoUpdate,
-            QObject *parent = Q_NULLPTR);
+            QObject *parent = nullptr);
     ~QGalleryTrackerResultSet();
 
     QStringList propertyNames() const;
-    int propertyKey(const QString &property) const;
-    QGalleryProperty::Attributes propertyAttributes(int key) const;
-    QVariant::Type propertyType(int key) const;
+    int propertyKey(const QString &property) const override;
+    QGalleryProperty::Attributes propertyAttributes(int key) const override;
+    QVariant::Type propertyType(int key) const override;
 
-    int itemCount() const;
+    int itemCount() const override;
 
-    int currentIndex() const;
-    bool fetch(int index);
+    int currentIndex() const override;
+    bool fetch(int index) override;
 
-    QVariant itemId() const;
-    QUrl itemUrl() const;
-    QString itemType() const;
-    QList<QGalleryResource> resources() const;
+    QVariant itemId() const override;
+    QUrl itemUrl() const override;
+    QString itemType() const override;
+    QList<QGalleryResource> resources() const override;
 
-    QVariant metaData(int key) const;
-    bool setMetaData(int key, const QVariant &value);
+    QVariant metaData(int key) const override;
+    bool setMetaData(int key, const QVariant &value) override;
 
-    void cancel();
+    void cancel() override;
 
-    bool waitForFinished(int msecs);
+    bool waitForFinished(int msecs) override;
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
 public Q_SLOTS:
     void refresh(const QList<int> &serviceIds = QList<int>());
@@ -158,7 +157,7 @@ Q_SIGNALS:
 protected:
     QGalleryTrackerResultSet(QGalleryTrackerResultSetPrivate &dd, QObject *parent);
 
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryTrackerResultSet)

@@ -82,11 +82,10 @@ QT_BEGIN_NAMESPACE_DOCGALLERY
     The \a parent is passed to QObject.
 */
 
-QAbstractGallery::QAbstractGallery(QObject *parent )
+QAbstractGallery::QAbstractGallery(QObject *parent)
     : QObject(parent)
-    , d_ptr(0)
+    , d_ptr(nullptr)
 {
-
 }
 
 /*!

@@ -47,10 +47,14 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_HEADER
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 class QAbstractGallery;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_MOC_INCLUDE("qabstractgallery.h");
+#endif
+
 class QGalleryAbstractResponse;
 class QGalleryAbstractRequestPrivate;
 
@@ -93,8 +97,8 @@ public:
         TypeRequest
     };
 
-    explicit QGalleryAbstractRequest(RequestType type, QObject *parent = Q_NULLPTR);
-    explicit QGalleryAbstractRequest( QAbstractGallery *gallery, RequestType type, QObject *parent = Q_NULLPTR);
+    explicit QGalleryAbstractRequest(RequestType type, QObject *parent = nullptr);
+    explicit QGalleryAbstractRequest(QAbstractGallery *gallery, RequestType type, QObject *parent = nullptr);
     ~QGalleryAbstractRequest();
 
     QAbstractGallery *gallery() const;
@@ -144,6 +148,5 @@ private:
 };
 
 QT_END_NAMESPACE_DOCGALLERY
-QT_END_HEADER
 
 #endif

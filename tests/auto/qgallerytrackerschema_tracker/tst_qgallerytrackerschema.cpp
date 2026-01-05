@@ -3,7 +3,7 @@
 ** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Mobility Components.
+** This file is part of the QtDocGallery.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -52,7 +52,6 @@
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QDocumentGallery::Error))
 Q_DECLARE_METATYPE(QVariant)
 Q_DECLARE_METATYPE(QVector<QVariant>)
-Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryDBusInterfacePointer))
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryQueryRequest::Scope))
 Q_DECLARE_METATYPE(QVector<QVariant::Type>)
 Q_DECLARE_METATYPE(QT_DOCGALLERY_PREPEND_NAMESPACE(QGalleryProperty::Attributes))
@@ -121,7 +120,6 @@ void tst_QGalleryTrackerSchema::initTestCase()
     qRegisterMetaType<QDocumentGallery::Error>();
     qRegisterMetaType<QVariant>();
     qRegisterMetaType<QVector<QVariant> >();
-    qRegisterMetaType<QGalleryDBusInterfacePointer>();
     qRegisterMetaType<QGalleryQueryRequest::Scope>();
     qRegisterMetaType<QVector<QVariant::Type> >();
     qRegisterMetaType<QGalleryProperty::Attributes>();
@@ -253,38 +251,13 @@ void tst_QGalleryTrackerSchema::supportedPropertyNames_data()
     QTest::addColumn<QStringList>("propertyNames");
 
     QTest::newRow("File") << QString::fromLatin1("File") << (QStringList()
-             << QLatin1String("author")
              << QLatin1String("fileExtension")
              << QLatin1String("fileName")
              << QLatin1String("filePath")
              << QLatin1String("fileSize")
-             << QLatin1String("comments")
-             << QLatin1String("copyright")
-             << QLatin1String("description")
-             << QLatin1String("keywords")
-             << QLatin1String("language")
-             << QLatin1String("lastAccessed")
              << QLatin1String("lastModified")
              << QLatin1String("mimeType")
-             << QLatin1String("path")
-             << QLatin1String("rating")
-             << QLatin1String("subject")
-             << QLatin1String("title")
              << QLatin1String("url")
-             << QLatin1String("audioBitRate")
-             << QLatin1String("audioCodec")
-             << QLatin1String("channelCount")
-             << QLatin1String("duration")
-             << QLatin1String("lastPlayed")
-             << QLatin1String("playCount")
-             << QLatin1String("sampleRate")
-             << QLatin1String("performer")
-             << QLatin1String("height")
-             << QLatin1String("width")
-             << QLatin1String("orientation")
-             << QLatin1String("latitude")
-             << QLatin1String("longitude")
-             << QLatin1String("altitude")
             );
 
     QTest::newRow("AudioGenre") << QString::fromLatin1("AudioGenre") << (QStringList()
@@ -2110,9 +2083,9 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                     "GROUP BY ?x";
     } {
         QGalleryFilter filter
-                = QDocumentGallery::fileName.regExp(QRegExp(QLatin1String("(file|document).ext")));
+                = QDocumentGallery::fileName.regExp(QRegularExpression(QLatin1String("(file|document).ext")));
 
-        QTest::newRow("File.fileName.regExp(QRegExp((file|document).ext))")
+        QTest::newRow("File.fileName.regExp(QRegularExpression((file|document).ext))")
                 << "File"
                 << QString()
                 << QGalleryQueryRequest::AllDescendants

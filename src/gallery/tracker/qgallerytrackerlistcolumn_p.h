@@ -87,13 +87,13 @@ public:
 class QGalleryTrackerStringColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 class QGalleryTrackerUrlColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 class QGalleryTrackerStringListColumn : public QGalleryTrackerValueColumn
@@ -101,8 +101,8 @@ class QGalleryTrackerStringListColumn : public QGalleryTrackerValueColumn
 public:
     QGalleryTrackerStringListColumn()
         : m_separatorChar(QLatin1Char('|')), m_separatorString(QLatin1String("|")) {}
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
-    QString toString(const QVariant &variant) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
+    QString toString(const QVariant &variant) const override;
 
 private:
     const QChar m_separatorChar;
@@ -112,26 +112,26 @@ private:
 class QGalleryTrackerIntegerColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 class QGalleryTrackerLongLongColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 class QGalleryTrackerDoubleColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
 };
 
 class QGalleryTrackerDateTimeColumn : public QGalleryTrackerValueColumn
 {
 public:
-    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const;
-    QString toString(const QVariant &variant) const;
+    QVariant toVariant(TrackerSparqlCursor *cursor, int index) const override;
+    QString toString(const QVariant &variant) const override;
 };
 
 class QGalleryTrackerStaticColumn : public QGalleryTrackerCompositeColumn
@@ -139,7 +139,7 @@ class QGalleryTrackerStaticColumn : public QGalleryTrackerCompositeColumn
 public:
     QGalleryTrackerStaticColumn(const QVariant &value) : m_value(value) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
 private:
     const QVariant m_value;
@@ -151,7 +151,7 @@ public:
     QGalleryTrackerPrefixColumn(int column, const QString &prefix)
         : m_column(column), m_prefix(prefix) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
 private:
     const int m_column;
@@ -164,7 +164,7 @@ public:
     QGalleryTrackerCompositeIdColumn(const QVector<int> columns, const QString &prefix)
         : m_columns(columns), m_prefix(prefix) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
 private:
     const QVector<int> m_columns;
@@ -178,7 +178,7 @@ class QGalleryTrackerFileUrlColumn : public QGalleryTrackerCompositeColumn
 public:
     QGalleryTrackerFileUrlColumn(int column) : m_column(column) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
     static QGalleryTrackerCompositeColumn *create(const QVector<int> &);
 
@@ -189,7 +189,7 @@ private:
 class QGalleryTrackerFilePathColumn : public QGalleryTrackerCompositeColumn
 {
 public:
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
     static QGalleryTrackerCompositeColumn *create(const QVector<int> &columns);
 };
@@ -197,7 +197,7 @@ public:
 class QGalleryTrackerPathColumn : public QGalleryTrackerCompositeColumn
 {
 public:
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
     static QGalleryTrackerCompositeColumn *create(const QVector<int> &columns);
 };
@@ -207,7 +207,7 @@ class QGalleryTrackerFileExtensionColumn : public QGalleryTrackerCompositeColumn
 public:
     QGalleryTrackerFileExtensionColumn(int column) : m_column(column) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
     static QGalleryTrackerCompositeColumn *create(const QVector<int> &);
 
@@ -222,14 +222,13 @@ public:
     QGalleryTrackerOrientationColumn(int column)
         : m_column(column) {}
 
-    QVariant value(QVector<QVariant>::const_iterator row) const;
+    QVariant value(QVector<QVariant>::const_iterator row) const override;
 
     static QGalleryTrackerCompositeColumn *create(const QVector<int> &);
 
 private:
     const int m_column;
 };
-
 
 QT_END_NAMESPACE_DOCGALLERY
 

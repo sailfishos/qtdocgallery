@@ -7,6 +7,10 @@ QT = \
     qml \
     docgallery
 
+linux-* {
+    QMAKE_CXXFLAGS += -Wsuggest-override
+}
+
 HEADERS += \
     qdeclarativedocumentgallery.h \
     qdeclarativegalleryfilter.h \
@@ -21,7 +25,5 @@ SOURCES += \
     qdeclarativegalleryitem.cpp \
     qdeclarativegalleryquerymodel.cpp \
     qdeclarativegallerytype.cpp
-
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 
 load(qml_plugin)

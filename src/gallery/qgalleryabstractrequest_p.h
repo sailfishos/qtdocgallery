@@ -61,6 +61,8 @@
 #include <QtCore/qsharedpointer.h>
 #include <QtCore/qpointer.h>
 
+#include <memory>
+
 QT_BEGIN_NAMESPACE_DOCGALLERY
 
 class QGalleryAbstractRequestPrivate
@@ -90,7 +92,7 @@ public:
 
     QGalleryAbstractRequest *q_ptr;
     QPointer<QAbstractGallery> gallery;
-    QScopedPointer<QGalleryAbstractResponse> response;
+    std::unique_ptr<QGalleryAbstractResponse> response;
     QGalleryAbstractRequest::RequestType type;
     QGalleryAbstractRequest::State state;
     int error;

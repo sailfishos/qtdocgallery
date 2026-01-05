@@ -68,8 +68,8 @@ class Q_GALLERY_EXPORT QGalleryItemRequest : public QGalleryAbstractRequest
     Q_PROPERTY(QList<QGalleryResource> resources READ resources NOTIFY itemChanged)
 
 public:
-    explicit QGalleryItemRequest(QObject *parent = Q_NULLPTR);
-    explicit QGalleryItemRequest(QAbstractGallery *gallery, QObject *parent = Q_NULLPTR);
+    explicit QGalleryItemRequest(QObject *parent = nullptr);
+    explicit QGalleryItemRequest(QAbstractGallery *gallery, QObject *parent = nullptr);
     ~QGalleryItemRequest();
 
     QStringList propertyNames() const;
@@ -108,7 +108,7 @@ Q_SIGNALS:
     void metaDataChanged(const QList<int> &keys);
 
 protected:
-    void setResponse(QGalleryAbstractResponse *response);
+    void setResponse(QGalleryAbstractResponse *response) override;
 
 private:
     Q_DECLARE_PRIVATE(QGalleryItemRequest)

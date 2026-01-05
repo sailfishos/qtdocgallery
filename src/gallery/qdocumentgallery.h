@@ -163,17 +163,17 @@ public:
         FilterError
     };
 
-    QDocumentGallery(QObject *parent = Q_NULLPTR);
+    QDocumentGallery(QObject *parent = nullptr);
     ~QDocumentGallery();
 
-    bool isRequestSupported(QGalleryAbstractRequest::RequestType type) const;
+    bool isRequestSupported(QGalleryAbstractRequest::RequestType type) const override;
 
     QStringList itemTypePropertyNames(const QString &itemType) const;
     QGalleryProperty::Attributes propertyAttributes(
             const QString &propertyName, const QString &itemType) const;
 
 protected:
-    QGalleryAbstractResponse *createResponse(QGalleryAbstractRequest *request);
+    QGalleryAbstractResponse *createResponse(QGalleryAbstractRequest *request) override;
 
 private:
     Q_DECLARE_PRIVATE(QDocumentGallery)

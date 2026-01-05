@@ -407,18 +407,17 @@ void QGalleryAbstractRequest::execute()
                 .arg(QString::fromLatin1(metaObject()->className()));
 
         if (d_ptr->response) {
-            QScopedPointer<QGalleryAbstractResponse> oldResponse(d_ptr->response.take());
+            QScopedPointer<QGalleryAbstractResponse> oldResponse(d_ptr->response.release());
 
             Q_UNUSED(oldResponse);
 
-            setResponse(0);
+            setResponse(nullptr);
         }
 
         Q_EMIT error(d_ptr->error, d_ptr->errorString);
         Q_EMIT errorChanged();
     } else {
-        QScopedPointer<QGalleryAbstractResponse> oldResponse(
-                d_ptr->gallery.data()->createResponse(this));
+        std::unique_ptr<QGalleryAbstractResponse> oldResponse(d_ptr->gallery.data()->createResponse(this));
         d_ptr->response.swap(oldResponse);
 
         if (d_ptr->response) {
@@ -431,7 +430,7 @@ void QGalleryAbstractRequest::execute()
                 d_ptr->response.reset();
 
                 if (oldResponse)
-                    setResponse(0);
+                    setResponse(nullptr);
 
                 Q_EMIT error(d_ptr->error, d_ptr->errorString);
                 Q_EMIT errorChanged();
@@ -446,13 +445,13 @@ void QGalleryAbstractRequest::execute()
                     d_ptr->state = Finished;
                 }
 
-                connect(d_ptr->response.data(), SIGNAL(finished()), this, SLOT(_q_finished()));
-                connect(d_ptr->response.data(), SIGNAL(resumed()), this, SLOT(_q_resumed()));
-                connect(d_ptr->response.data(), SIGNAL(canceled()), this, SLOT(_q_canceled()));
-                connect(d_ptr->response.data(), SIGNAL(progressChanged(int,int)),
+                connect(d_ptr->response.get(), SIGNAL(finished()), this, SLOT(_q_finished()));
+                connect(d_ptr->response.get(), SIGNAL(resumed()), this, SLOT(_q_resumed()));
+                connect(d_ptr->response.get(), SIGNAL(canceled()), this, SLOT(_q_canceled()));
+                connect(d_ptr->response.get(), SIGNAL(progressChanged(int,int)),
                         this, SLOT(_q_progressChanged(int,int)));
 
-                setResponse(d_ptr->response.data());
+                setResponse(d_ptr->response.get());
             }
 
             oldResponse.reset();
@@ -465,7 +464,7 @@ void QGalleryAbstractRequest::execute()
                     .arg(QString::fromLatin1(d_ptr->gallery.data()->metaObject()->className()));
 
             if (oldResponse)
-                setResponse(0);
+                setResponse(nullptr);
 
             oldResponse.reset();
 
@@ -520,11 +519,11 @@ void QGalleryAbstractRequest::clear()
     d_ptr->errorString = QString();
 
     if (d_ptr->response) {
-        QScopedPointer<QGalleryAbstractResponse> oldResponse(d_ptr->response.take());
+        QScopedPointer<QGalleryAbstractResponse> oldResponse(d_ptr->response.release());
 
         d_ptr->state = Inactive;
 
-        setResponse(0);
+        setResponse(nullptr);
 
         oldResponse.reset();
 

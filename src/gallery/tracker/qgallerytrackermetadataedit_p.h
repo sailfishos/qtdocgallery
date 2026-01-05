@@ -71,7 +71,7 @@ public:
             TrackerSparqlConnection *connection,
             const QString &uri,
             const QString &service,
-            QObject *parent = Q_NULLPTR);
+            QObject *parent = nullptr);
     ~QGalleryTrackerMetaDataEdit();
 
     int index() const { return m_index; }

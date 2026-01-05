@@ -110,7 +110,7 @@ public:
 
     QObject *metaData() const { return m_metaData; }
 
-    void componentComplete();
+    void componentComplete() override;
 
 public Q_SLOTS:
     void reload();
@@ -137,11 +137,11 @@ protected:
         CanceledUpdate
     };
 
-    explicit QDeclarativeGalleryItem(QObject *parent = Q_NULLPTR);
+    explicit QDeclarativeGalleryItem(QObject *parent = nullptr);
 
     void deferredExecute();
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
     QGalleryItemRequest m_request;
     QQmlPropertyMap *m_metaData;
@@ -162,10 +162,10 @@ class QDeclarativeDocumentGalleryItem : public QDeclarativeGalleryItem
     Q_OBJECT
     Q_PROPERTY(QDocGallery::QDeclarativeDocumentGallery::ItemType itemType READ itemType NOTIFY itemTypeChanged)
 public:
-    explicit QDeclarativeDocumentGalleryItem(QObject *parent = Q_NULLPTR);
+    explicit QDeclarativeDocumentGalleryItem(QObject *parent = nullptr);
     ~QDeclarativeDocumentGalleryItem();
 
-    void classBegin();
+    void classBegin() override;
 
     QDeclarativeDocumentGallery::ItemType itemType() const;
 

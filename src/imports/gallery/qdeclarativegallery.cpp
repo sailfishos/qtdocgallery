@@ -58,7 +58,7 @@ class QGalleryDeclarativeModule : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface" FILE "gallery.json")
 
 public:
-    virtual void registerTypes(const char *uri)
+    virtual void registerTypes(const char *uri) override
     {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtDocGallery"));
 
@@ -67,7 +67,11 @@ public:
         int major = 5;
         int minor = 0;
         qmlRegisterUncreatableType<QDeclarativeDocumentGallery>(uri, major, minor, "DocumentGallery", QDeclarativeDocumentGallery::tr("DocumentGallery is a namespace class"));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        qmlRegisterAnonymousType<QDeclarativeGalleryFilterBase>(uri, major);
+#else
         qmlRegisterType<QDeclarativeGalleryFilterBase>();
+#endif
         qmlRegisterType<QDeclarativeGalleryEqualsFilter>(uri, major, minor, "GalleryEqualsFilter");
         qmlRegisterType<QDeclarativeGalleryLessThanFilter>(uri, major, minor, "GalleryLessThanFilter");
         qmlRegisterType<QDeclarativeGalleryLessThanEqualsFilter>(uri, major, minor, "GalleryLessThanEqualsFilter");

@@ -76,7 +76,7 @@ class QGalleryTrackerResultSetThread : public QThread
 public:
     QGalleryTrackerResultSetThread(QRunnable *runnable) : runnable(runnable) {}
 
-    void run() { runnable->run(); }
+    void run() override{ runnable->run(); }
 
 private:
     QRunnable *runnable;
@@ -266,9 +266,9 @@ public:
             bool autoUpdate)
         : connection(connection)
         , m_service( arguments->service )
-        , idColumn(arguments->idColumn.take())
-        , urlColumn(arguments->urlColumn.take())
-        , typeColumn(arguments->typeColumn.take())
+        , idColumn(arguments->idColumn.release())
+        , urlColumn(arguments->urlColumn.release())
+        , typeColumn(arguments->typeColumn.release())
         , updateMask(arguments->updateMask)
         , identityWidth(arguments->identityWidth)
         , tableWidth(arguments->tableWidth)
@@ -358,7 +358,7 @@ public:
 
     void query();
 
-    void run();
+    void run() override;
 
     void synchronize();
 

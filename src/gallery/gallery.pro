@@ -47,6 +47,8 @@ OTHER_FILES = \
     qgallerytype.qdoc
 
 linux-* {
+    QMAKE_CXXFLAGS += -Wsuggest-override
+
     qtHaveModule(dbus):contains(tracker_enabled, yes) {
         include (tracker/tracker.pri)
     } else: {

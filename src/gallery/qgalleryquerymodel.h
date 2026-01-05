@@ -69,8 +69,8 @@ class Q_GALLERY_EXPORT QGalleryQueryModel : public QAbstractItemModel
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorChanged)
     Q_PROPERTY(QGalleryAbstractRequest::State state READ state NOTIFY stateChanged)
 public:
-    QGalleryQueryModel(QObject *parent = Q_NULLPTR);
-    QGalleryQueryModel(QAbstractGallery *gallery, QObject *parent = Q_NULLPTR);
+    QGalleryQueryModel(QObject *parent = nullptr);
+    QGalleryQueryModel(QAbstractGallery *gallery, QObject *parent = nullptr);
     ~QGalleryQueryModel();
 
     QAbstractGallery *gallery() const;
@@ -118,27 +118,27 @@ public:
 
     QGalleryAbstractRequest::State state() const;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &index) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const  override;
+    QModelIndex parent(const QModelIndex &index) const override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     QVariant itemId(const QModelIndex &index) const;
     QUrl itemUrl(const QModelIndex &index) const;
     QString itemType(const QModelIndex &index) const;
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     bool setHeaderData(
             int section,
             Qt::Orientation orientation,
             const QVariant &value,
-            int role = Qt::EditRole);
+            int role = Qt::EditRole) override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 Q_SIGNALS:
     void galleryChanged();

@@ -267,7 +267,7 @@ void QDeclarativeGalleryItem::_q_metaDataChanged(const QList<int> &keys)
     \brief The DocumentGalleryItem element allows you to request information
     about a single item from the document gallery
 
-    This element is part of the \b {QtMobility.gallery 1.1} module.
+    This element is part of the \b {QtDocGallery 5.0} module.
 
 
     \sa DocumentGalleryModel, DocumentGalleryType

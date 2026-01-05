@@ -61,7 +61,7 @@ class Q_GALLERY_EXPORT QGalleryResultSet : public QGalleryAbstractResponse
     Q_OBJECT
     Q_DECLARE_PRIVATE(QGalleryResultSet)
 public:
-    QGalleryResultSet(QObject *parent = Q_NULLPTR);
+    QGalleryResultSet(QObject *parent = nullptr);
     ~QGalleryResultSet();
 
     virtual int propertyKey(const QString &property) const = 0;
