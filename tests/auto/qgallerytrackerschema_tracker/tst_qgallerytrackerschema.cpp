@@ -2544,20 +2544,20 @@ void tst_QGalleryTrackerSchema::queryResponseValueColumnToVariant_data()
             << QString()
             << QVariant(QString());
 
-    QTest::newRow("File.keywords (1)")
-            << "File"
+    QTest::newRow("Image.keywords (1)")
+            << "Image"
             << "keywords"
             << "Holiday"
             << QVariant(QStringList() << QLatin1String("Holiday"));
 
-    QTest::newRow("File.keywords (2)")
-            << "File"
+    QTest::newRow("Image.keywords (2)")
+            << "Image"
             << "keywords"
             << "Holiday|Summer"
             << QVariant(QStringList() << QLatin1String("Holiday") << QLatin1String("Summer"));
 
-    QTest::newRow("File.keywords (3)")
-            << "File"
+    QTest::newRow("Image.keywords (3)")
+            << "Image"
             << "keywords"
             << "2009|Holiday|Summer"
             << QVariant(QStringList()
@@ -2565,8 +2565,8 @@ void tst_QGalleryTrackerSchema::queryResponseValueColumnToVariant_data()
                     << QLatin1String("Holiday")
                     << QLatin1String("Summer"));
 
-    QTest::newRow("File.keywords (Empty")
-            << "File"
+    QTest::newRow("Image.keywords (Empty")
+            << "Image"
             << "keywords"
             << QString()
             << QVariant(QStringList());
@@ -2678,20 +2678,20 @@ void tst_QGalleryTrackerSchema::queryResponseValueColumnToString_data()
             << QVariant(QString())
             << QString();
 
-    QTest::newRow("File.keywords (1)")
-            << "File"
+    QTest::newRow("Image.keywords (1)")
+            << "Image"
             << "keywords"
             << QVariant(QStringList() << QLatin1String("Holiday"))
             << "Holiday";
 
-    QTest::newRow("File.keywords (2)")
-            << "File"
+    QTest::newRow("Image.keywords (2)")
+            << "Image"
             << "keywords"
             << QVariant(QStringList() << QLatin1String("Holiday") << QLatin1String("Summer"))
             << "Holiday|Summer";
 
-    QTest::newRow("File.keywords (3)")
-            << "File"
+    QTest::newRow("Image.keywords (3)")
+            << "Image"
             << "keywords"
             << QVariant(QStringList()
                     << QLatin1String("2009")
@@ -2699,14 +2699,14 @@ void tst_QGalleryTrackerSchema::queryResponseValueColumnToString_data()
                     << QLatin1String("Summer"))
             << "2009|Holiday|Summer";
 
-    QTest::newRow("File.keywords (QString)")
-            << "File"
+    QTest::newRow("Image.keywords (QString)")
+            << "Image"
             << "keywords"
             << QVariant(QLatin1String("Holiday"))
             << "Holiday";
 
-    QTest::newRow("File.keywords (Empty")
-            << "File"
+    QTest::newRow("Image.keywords (Empty")
+            << "Image"
             << "keywords"
             << QVariant(QStringList())
             << QString();
@@ -3145,4 +3145,3 @@ void tst_QGalleryTrackerSchema::serviceForType()
 QTEST_MAIN(tst_QGalleryTrackerSchema)
 
 #include "tst_qgallerytrackerschema.moc"
-
