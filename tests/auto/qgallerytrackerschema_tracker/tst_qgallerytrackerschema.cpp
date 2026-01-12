@@ -373,7 +373,7 @@ void tst_QGalleryTrackerSchema::prepareValidTypeResponse_data()
             <<  "SELECT 'identity' COUNT(DISTINCT ?x) "
                 "WHERE {"
                     "?x a nfo:FileDataObject . "
-                    "?x tracker:available true"
+                    "?x nie:dataSource ?dataSource . ?dataSource tracker:available true . "
                 "}";
 
     QTest::newRow("Artist")
@@ -383,8 +383,8 @@ void tst_QGalleryTrackerSchema::prepareValidTypeResponse_data()
                 "WHERE {"
                     "?x a nmm:Artist . "
                     "?track a nmm:MusicPiece . "
-                    "?track nmm:performer ?x . "
-                    "?track tracker:available true"
+                    "?track nmm:artist ?x . "
+                    "?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . "
                 "}";
 
     QTest::newRow("Album")
@@ -395,7 +395,7 @@ void tst_QGalleryTrackerSchema::prepareValidTypeResponse_data()
                     "?x a nmm:MusicAlbum . "
                     "?track a nmm:MusicPiece . "
                     "?track nmm:musicAlbum ?x . "
-                    "?track tracker:available true"
+                    "?track nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true . "
                 "}";
 
     QTest::newRow("AudioGenre")
@@ -404,7 +404,7 @@ void tst_QGalleryTrackerSchema::prepareValidTypeResponse_data()
             <<  "SELECT 'identity' COUNT(DISTINCT nfo:genre(?x)) "
                 "WHERE {"
                     "?x a nmm:MusicPiece . "
-                    "?x tracker:available true "
+                    "?x nie:isStoredAs ?file . ?file nie:dataSource/tracker:available true .  "
                     "FILTER(nfo:genre(?x)!='')"
                 "}";
 }
@@ -632,7 +632,7 @@ void tst_QGalleryTrackerSchema::queryResponseRootType_data()
                 "WHERE {"
                     "?x a nmm:Artist . "
                     "?track a nmm:MusicPiece . "
-                    "?track nmm:performer ?x . "
+                    "?track nmm:artist ?x . "
                     "?track tracker:available true"
                 "} "
                 "GROUP BY ?x"
