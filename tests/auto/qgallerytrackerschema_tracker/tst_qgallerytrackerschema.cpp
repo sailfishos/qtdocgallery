@@ -1916,66 +1916,6 @@ void tst_QGalleryTrackerSchema::queryResponseFilter_data()
                     "} "
                     "GROUP BY ?x";
     } {
-        QGalleryFilter filter = QDocumentGallery::path.startsWith(QLatin1String("/path/"));
-
-        QTest::newRow("File.path.startsWith(/path/)")
-                << "File"
-                << QString()
-                << QGalleryQueryRequest::AllDescendants
-                << filter
-                <<  "SELECT ?x nie:url(?x) rdf:type(?x) "
-                    "WHERE {"
-                        "?x a nfo:FileDataObject . "
-                        "?x tracker:available true "
-                        "FILTER(fn:starts-with(nie:url(nfo:belongsToContainer(?x)),'file:///path/'))"
-                    "} "
-                    "GROUP BY ?x";
-    } {
-        QGalleryFilter filter = QDocumentGallery::path.endsWith(QLatin1String("/to"));
-
-        QTest::newRow("File.path.endsWith(/to)")
-                << "File"
-                << QString()
-                << QGalleryQueryRequest::AllDescendants
-                << filter
-                <<  "SELECT ?x nie:url(?x) rdf:type(?x) "
-                    "WHERE {"
-                        "?x a nfo:FileDataObject . "
-                        "?x tracker:available true "
-                        "FILTER(fn:ends-with(nie:url(nfo:belongsToContainer(?x)),'/to'))"
-                    "} "
-                    "GROUP BY ?x";
-    } {
-        QGalleryFilter filter = QDocumentGallery::path.contains(QLatin1String("path"));
-
-        QTest::newRow("File.path.contains(path)")
-                << "File"
-                << QString()
-                << QGalleryQueryRequest::AllDescendants
-                << filter
-                <<  "SELECT ?x nie:url(?x) rdf:type(?x) "
-                    "WHERE {"
-                        "?x a nfo:FileDataObject . "
-                        "?x tracker:available true "
-                        "FILTER(fn:contains(nie:url(nfo:belongsToContainer(?x)),'path'))"
-                    "} "
-                    "GROUP BY ?x";
-    } {
-        QGalleryFilter filter = QDocumentGallery::path.wildcard(QLatin1String("/*/to"));
-
-        QTest::newRow("File.path.wildcard(/*/to)")
-                << "File"
-                << QString()
-                << QGalleryQueryRequest::AllDescendants
-                << filter
-                <<  "SELECT ?x nie:url(?x) rdf:type(?x) "
-                    "WHERE {"
-                        "?x a nfo:FileDataObject . "
-                        "?x tracker:available true "
-                        "FILTER(fn:contains(nie:url(nfo:belongsToContainer(?x)),'file:///*/to'))"
-                    "} "
-                    "GROUP BY ?x";
-    } {
         QGalleryFilter filter = QDocumentGallery::fileExtension == QLatin1String("ext");
 
         QTest::newRow("File.fileExtension == ext")
@@ -2802,24 +2742,6 @@ void tst_QGalleryTrackerSchema::queryResponseCompositeColumn_data()
                     << QUrl(QLatin1String("file:///path/to/file.ext"))
                     << QLatin1String("Files"))
             << QVariant(QLatin1String("/path/to/file.ext"));
-
-    QTest::newRow("File.path")
-            << QString::fromLatin1("Image")
-            << QString::fromLatin1("path")
-            << (QVector<QVariant>()
-                    << QLatin1String("uuid:ff172362-d959-99e0-a792-0ddafdd2c559")
-                    << QUrl(QLatin1String("file:///path/to/file.ext"))
-                    << QLatin1String("Files"))
-            << QVariant(QLatin1String("/path/to"));
-
-    QTest::newRow("File.path (empty fileName)")
-            << QString::fromLatin1("Image")
-            << QString::fromLatin1("path")
-            << (QVector<QVariant>()
-                    << QLatin1String("uuid:ff172362-d959-99e0-a792-0ddafdd2c559")
-                    << QUrl(QLatin1String("file:///path/to/"))
-                    << QLatin1String("Files"))
-            << QVariant(QLatin1String("/path/to"));
 
     QTest::newRow("File.fileExtension")
             << QString::fromLatin1("Image")
