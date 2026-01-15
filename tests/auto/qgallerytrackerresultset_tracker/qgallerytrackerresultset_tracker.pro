@@ -1,5 +1,5 @@
 include(../auto.pri)
 
-QT += gallery-private
+QT += docgallery docgallery-private
 
 SOURCES += tst_qgallerytrackerresultset.cpp
