@@ -915,6 +915,7 @@ static const QGalleryItemProperty qt_galleryImagePropertyList[] =
     QT_GALLERY_ITEM_PROPERTY("fNumber"           , "nmm:fnumber(?x)"                    , Double  , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_ITEM_PROPERTY("flashEnabled"      , "nmm:flash(?x)"                      , String  , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_ITEM_PROPERTY("focalLength"       , "nmm:focalLength(?x)"                , Double  , CanRead | CanWrite | CanSort | CanFilter),
+    QT_GALLERY_ITEM_PROPERTY("isoSpeed"          , "nmm:isoSpeed(?x)"                   , Double  , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_ITEM_PROPERTY("meteringMode"      , "nmm:meteringMode(?x)"               , String  , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_ITEM_PROPERTY("whiteBalance"      , "nmm:whiteBalance(?x)"               , String  , CanRead | CanWrite | CanSort | CanFilter),
     QT_GALLERY_LINKED_PROPERTY("cameraManufacturer", "nfo:manufacturer(?camera)", " . ?x nfo:equipment ?camera", String  , CanRead | CanSort | CanFilter),
